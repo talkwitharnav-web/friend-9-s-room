@@ -48,6 +48,7 @@ const responseFailures = [];
 const dialogFocus = [];
 const visitedOrigins = new Set();
 let client;
+let documentLoader;
 let stage = "starting an isolated browser";
 const record = (name, condition = true) => {
   assert.ok(condition, name);
@@ -170,9 +171,14 @@ async function screenshot(filename, full = true) {
   if (full) await evaluate(`window.scrollTo({left:${previousScroll.x},top:${previousScroll.y},behavior:"instant"})`);
 }
 
-async function navigate() {
-  await client.send("Page.navigate", { url: targetUrl });
-  await waitFor("document.documentElement.dataset.ready === 'true'", "the external room script initialized");
+async function navigate({ scripts = true } = {}) {
+  const navigation = await client.send("Page.navigate", { url: targetUrl });
+  assert.equal(navigation.errorText, undefined);
+  const deadline = Date.now() + 10_000;
+  while (documentLoader !== navigation.loaderId && Date.now() < deadline) await sleep(20);
+  assert.equal(documentLoader, navigation.loaderId, "The new document committed, not the previous page.");
+  await waitFor(scripts ? "document.documentElement.dataset.ready === 'true'" : "document.readyState === 'complete'",
+    scripts ? "the external room script initialized" : "the JavaScript-free document loaded");
   await evaluate("document.fonts.ready");
 }
 
@@ -239,6 +245,9 @@ try {
   assert.ok(ready, "The isolated browser has a responsive debugging endpoint.");
   const tab = await (await fetch(`http://127.0.0.1:${cdpPort}/json/new?about:blank`, { method: "PUT" })).json();
   client = await connect(tab.webSocketDebuggerUrl);
+  client.on("Page.frameNavigated", ({ frame }) => {
+    if (!frame.parentId) documentLoader = frame.loaderId;
+  });
   client.on("Runtime.exceptionThrown", (event) => pageErrors.push(event.exceptionDetails));
   client.on("Log.entryAdded", ({ entry }) => {
     if (entry.level === "error") pageErrors.push(entry.text);
@@ -254,11 +263,13 @@ try {
   await client.send("Page.addScriptToEvaluateOnNewDocument", { source: `
     window.__roomCsp = [];
     window.__roomAudioNodes = 0;
+    window.__roomAudioContexts = new Set();
     document.addEventListener("securitypolicyviolation", event => window.__roomCsp.push(event.violatedDirective));
     if (window.AudioContext) {
       const original = AudioContext.prototype.createOscillator;
       AudioContext.prototype.createOscillator = function (...args) {
         window.__roomAudioNodes += 1;
+        window.__roomAudioContexts.add(this);
         return original.apply(this, args);
       };
     }
@@ -297,6 +308,18 @@ try {
   await click('[data-action="sound"]');
   await waitFor('document.documentElement.dataset.sound === "on"', "explicitly requested audio");
   record("The radio generates original audio nodes only on request", await evaluate("window.__roomAudioNodes >= 6"));
+  const otherTab = await (await fetch(`http://127.0.0.1:${cdpPort}/json/new?about:blank`, { method: "PUT" })).json();
+  const otherClient = await connect(otherTab.webSocketDebuggerUrl);
+  await otherClient.send("Page.bringToFront");
+  await waitFor('document.hidden && document.documentElement.dataset.sound === "off" && !document.getElementById("sound-toggle").disabled', "hiding the real tab stopped its radio");
+  record("Leaving the tab closes its real AudioContext", await evaluate('[...window.__roomAudioContexts].every(context => context.state === "closed")'));
+  await client.send("Page.bringToFront");
+  await waitFor('!document.hidden', "returning to the room tab");
+  record("Returning to the tab never restarts sound", await evaluate('document.documentElement.dataset.sound === "off"'));
+  await client.send("Target.closeTarget", { targetId: otherTab.id });
+  otherClient.close();
+  await click("#sound-toggle");
+  await waitFor('document.documentElement.dataset.sound === "on"', "radio can be deliberately started again");
   await click("#sound-toggle");
   await waitFor('document.documentElement.dataset.sound === "off" && !document.getElementById("sound-toggle").disabled', "sound stopped");
   await inspect("lamp");
@@ -334,6 +357,7 @@ try {
   await waitFor('document.getElementById("discoveries-dialog").open', "keyboard opened the discovery list");
   for (let index = 0; index < 12; index++) {
     await key("Tab", "Tab", 9);
+    await sleep(100);
     const focus = await evaluate(`({
       inDialog: document.activeElement.closest("dialog")?.id === "discoveries-dialog",
       documentHasFocus: document.hasFocus(),
@@ -341,10 +365,15 @@ try {
       id: document.activeElement.id
     })`);
     dialogFocus.push(focus);
-    // Native dialogs may yield to browser chrome, but never to the inert page.
+    // BODY is Chromium's no-focused-content sentinel during native Tab cycling.
     record(`Modal Tab ${index + 1} never reaches the background page`,
-      focus.inDialog || (!focus.documentHasFocus && focus.tag === "BODY"));
+      focus.inDialog || focus.tag === "BODY");
   }
+  record("The modal's background cannot receive even programmatic focus", await evaluate(`(() => {
+    document.querySelector(".home-link").focus();
+    return document.activeElement !== document.querySelector(".home-link") &&
+      document.getElementById("discoveries-dialog").open;
+  })()`));
   await key("Escape", "Escape", 27);
   await waitFor('!document.getElementById("discoveries-dialog").open', "discovery dialog closed");
   record("Discovery dialog returns keyboard focus", await evaluate('document.activeElement.id === "discovery-toggle"'));
@@ -372,6 +401,8 @@ try {
   await screenshot("mobile-large-text.png");
   await viewport(320, 740, true);
   await layoutCheck("320px with large text");
+  await viewport(800, 900);
+  await layoutCheck("800px tablet with large text");
   await viewport(390, 844, true);
   await client.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] });
   await waitFor('document.documentElement.dataset.reducedMotion === "true"', "OS reduced motion is honored");
@@ -394,6 +425,24 @@ try {
   await click('[data-action="ginger"]');
   record("Blocked storage does not prevent room interactions", await evaluate('document.documentElement.dataset.tea === "ginger" && !document.getElementById("storage-notice").hidden'));
   await client.send("Page.removeScriptToEvaluateOnNewDocument", { identifier: storageProbe.identifier });
+
+  stage = "unsupported audio and JavaScript-free rendering";
+  const audioProbe = await client.send("Page.addScriptToEvaluateOnNewDocument", { source: `
+    Object.defineProperty(window, "AudioContext", { value: undefined, configurable: true });
+    Object.defineProperty(window, "webkitAudioContext", { value: undefined, configurable: true });
+  ` });
+  await navigate();
+  await click("#sound-toggle");
+  record("Unavailable WebAudio gives feedback without disabling the room", await evaluate('document.documentElement.dataset.sound === "off" && !document.getElementById("sound-toggle").disabled && document.getElementById("room-status").textContent.includes("can\'t play")'));
+  await inspect("cat");
+  record("Discoveries still work without audio support", await evaluate('document.getElementById("discovery-count").textContent === "1 / 9"'));
+  await client.send("Page.removeScriptToEvaluateOnNewDocument", { identifier: audioProbe.identifier });
+  await client.send("Emulation.setScriptExecutionDisabled", { value: true });
+  await navigate({ scripts: false });
+  record("The illustration and welcome remain available without JavaScript", await evaluate('document.querySelector(".room-illustration").getBoundingClientRect().height > 100 && document.getElementById("note-title").textContent === "Oh, hello."'));
+  record("JavaScript-free controls do not pretend to work", await evaluate('[...document.querySelectorAll("[data-interactive]")].every(button => button.disabled)'));
+  await client.send("Emulation.setScriptExecutionDisabled", { value: false });
+  await navigate();
   record("No CSP violations throughout interaction checks", await evaluate("window.__roomCsp.length === 0"));
   record("No application runtime errors", pageErrors.length === 0);
   record("No failed page or asset requests", responseFailures.length === 0);
