@@ -6,9 +6,12 @@
   "description": "A small, lived-in corner of itsvibed.com.",
   "scripts": {
     "start": "node server.mjs",
-    "check": "node --check server.mjs && node --check public/room.js && node --check scripts/browser-check.mjs",
+    "check": "node --check server.mjs && node --check public/room.js && node --check public/room-state.js && node --check public/room-content.js && node --check scripts/room-browser.mjs && node --check scripts/playwright-check.mjs",
     "test": "node --test",
-    "test:browser": "node scripts/browser-check.mjs"
+    "test:browser": "node scripts/playwright-check.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
   },
   "engines": {
     "node": ">=22.18"

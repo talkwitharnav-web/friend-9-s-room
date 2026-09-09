@@ -47,6 +47,8 @@ function loadAssets() {
     ["", "index.html", "text/html; charset=utf-8"],
     ["/room.css", "room.css", "text/css; charset=utf-8"],
     ["/room.js", "room.js", "text/javascript; charset=utf-8"],
+    ["/room-state.js", "room-state.js", "text/javascript; charset=utf-8"],
+    ["/room-content.js", "room-content.js", "text/javascript; charset=utf-8"],
     ["/room.svg", "room.svg", "image/svg+xml"],
     ["/favicon.svg", "favicon.svg", "image/svg+xml"],
   ];

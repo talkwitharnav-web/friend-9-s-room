@@ -77,6 +77,8 @@ test("the page and every namespaced asset load without a fallback document", asy
     ["", "text/html", "<!doctype html>"],
     ["/room.css", "text/css", ":root"],
     ["/room.js", "text/javascript", "const "],
+    ["/room-state.js", "text/javascript", "export "],
+    ["/room-content.js", "text/javascript", "export "],
     ["/room.svg", "image/svg+xml", "<svg"],
     ["/favicon.svg", "image/svg+xml", "<svg"],
   ];

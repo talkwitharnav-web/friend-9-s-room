@@ -1,43 +1,18 @@
-const STORAGE_KEY = "friend9.room.v1";
+import {
+  STORAGE_KEY, OBJECT_IDS, PLAN_IDS, SCRAP_IDS, freshState, readStoredState,
+  resetDiscoveries, togglePin,
+} from "./room-state.js";
+import {
+  OBJECT_LABELS, TRACKS, getStory, getScrap, planReaction, residentLine, getLetter,
+} from "./room-content.js";
+
 const root = document.documentElement;
 const byId = (id) => document.getElementById(id);
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
-const objectIds = ["window", "postcards", "plant", "radio", "lamp", "tea", "book", "mending", "cat"];
-const postcardMemories = [
-  {
-    title: "The ferry we missed.",
-    story: "We missed the ferry. Found the bakery. Called it even.",
-    extra: "Jo wanted to wait for the next boat. I wanted to see where the little path went. We walked home. These are the socks I'm still repairing.",
-  },
-  {
-    title: "A very good wrong turn.",
-    story: "A bakery with three tables, no sign, and the best thing I've ever eaten out of a paper bag.",
-    extra: "I drew a map on the back. It mostly says 'left at the interesting tree.' Jo has asked me not to give directions anymore.",
-  },
-  {
-    title: "The scenic route.",
-    story: "The bicycle ride was supposed to take twenty minutes. It took two hours. Nothing went wrong.",
-    extra: "I stopped for a tree, a dog, and a bench with excellent judgment about where to be.",
-  },
-];
-const tracks = ["Window seat", "Slow Sunday", "The scenic route"];
-const initialState = () => ({
-  version: 1,
-  seen: [],
-  theme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "evening" : "day",
-  weather: "sun",
-  tea: "none",
-  watered: false,
-  mended: false,
-  cat: "rug",
-  postcard: 0,
-  pinnedPostcard: null,
-  bookmarked: false,
-  track: 0,
-  reducedMotion: false,
-  largeText: false,
-  contrast: false,
-});
+const objectIds = OBJECT_IDS;
+const tracks = TRACKS;
+const prefersEvening = () => window.matchMedia("(prefers-color-scheme: dark)").matches;
+const initialState = () => freshState(prefersEvening());
 
 function storageNotice(message, error) {
   byId("storage-notice").hidden = false;
@@ -50,23 +25,6 @@ function expectedStorageError(error) {
     ["SecurityError", "QuotaExceededError", "NS_ERROR_DOM_QUOTA_REACHED"].includes(error.name);
 }
 
-function validState(value) {
-  return value !== null && typeof value === "object" && !Array.isArray(value) &&
-    value.version === 1 &&
-    Array.isArray(value.seen) && value.seen.length <= 9 &&
-    value.seen.every((id) => objectIds.includes(id)) &&
-    new Set(value.seen).size === value.seen.length &&
-    ["day", "evening"].includes(value.theme) &&
-    ["sun", "rain"].includes(value.weather) &&
-    ["none", "mint", "ginger"].includes(value.tea) &&
-    ["rug", "chair"].includes(value.cat) &&
-    [0, 1, 2].includes(value.postcard) &&
-    [null, 0, 1, 2].includes(value.pinnedPostcard) &&
-    [0, 1, 2].includes(value.track) &&
-    ["watered", "mended", "bookmarked", "reducedMotion", "largeText", "contrast"]
-      .every((key) => typeof value[key] === "boolean");
-}
-
 function restoreState() {
   let raw;
   try {
@@ -76,29 +34,20 @@ function restoreState() {
     storageNotice("Make yourself at home. This browser can't keep your discoveries after you leave.", error);
     return initialState();
   }
-  if (raw === null) return initialState();
-  let parsed;
-  if (raw.length <= 4096) {
-    try {
-      parsed = JSON.parse(raw);
-    } catch (error) {
-      if (!(error instanceof SyntaxError)) throw error;
-    }
-  }
-  if (!validState(parsed)) {
-    storageNotice("The saved room settings couldn't be read, so this visit starts fresh.");
-    return initialState();
-  }
-  // Copy only this version's known fields, never arbitrary stored properties.
-  return Object.fromEntries(Object.keys(initialState()).map((key) => [key, parsed[key]]));
+  const result = readStoredState(raw, prefersEvening());
+  if (result.notice) storageNotice(result.notice);
+  return result.state;
 }
 
 let state = restoreState();
 let selectedObject = null;
 let lastHotspot = null;
 let noteResult = "";
-let statusTimer;
-let adviceIndex = 0;
+let selectedScrap = "shelf";
+let activePrompt = null;
+let conversationTurn = 0;
+let lastPlan = null;
+let noticeTimer;
 let audioContext = null;
 let audioMaster = null;
 let audioTimer;
@@ -116,13 +65,11 @@ function persistState() {
   }
 }
 
-function announce(message) {
-  clearTimeout(statusTimer);
+function announce(message, visible = false) {
+  clearTimeout(noticeTimer);
   byId("room-status").textContent = message;
-  byId("room-status").dataset.visible = "true";
-  statusTimer = setTimeout(() => {
-    byId("room-status").dataset.visible = "false";
-  }, 6500);
+  byId("room-status").dataset.visible = String(visible);
+  if (visible) noticeTimer = setTimeout(() => { byId("room-status").dataset.visible = "false"; }, 6000);
 }
 
 function discover(id) {
@@ -144,133 +91,155 @@ function roomAction(id, label, run, options = {}) {
   return { id, label, run, ...options };
 }
 
+function storyFields(id) {
+  return {
+    label: OBJECT_LABELS[id],
+    title: () => getStory(id, state).title,
+    story: () => getStory(id, state).glance,
+    extra: () => getStory(id, state).detail,
+  };
+}
+
 const objects = {
   window: {
-    label: "The window",
-    title: () => "The outside can wait.",
-    story: () => "I go out for ten minutes and come back with a bread roll, a new route, and three observations about trees.",
-    extra: () => state.weather === "rain"
-      ? "I'm at the good part of the book. Outside is also at the good part."
-      : "A perfectly good day for a bicycle ride. Or for thinking about a bicycle ride.",
+    ...storyFields("window"),
     actions: () => [
-      roomAction("sun", "A bit of sunshine", () => changeState({ weather: "sun" }, "The long way home looks inviting."), { pressed: state.weather === "sun" }),
-      roomAction("rain", "Let it drizzle", () => changeState({ weather: "rain" }, "Excellent walking weather. Also excellent staying-in weather."), { pressed: state.weather === "rain" }),
+      roomAction("sun", "Sunshine", () => changeState({ weather: "sun" }, "A good day for the garden path."), { pressed: state.weather === "sun", icon: "sun" }),
+      roomAction("rain", "Drizzle", () => changeState({ weather: "rain" }, "The umbrella has been promoted."), { pressed: state.weather === "rain", icon: "rain" }),
     ],
   },
   postcards: {
-    label: "The postcards",
-    title: () => postcardMemories[state.postcard].title,
-    story: () => postcardMemories[state.postcard].story,
-    extra: () => postcardMemories[state.postcard].extra,
+    ...storyFields("postcards"),
     actions: () => [
-      roomAction("turn", "Turn to another memory", () => changeState({ postcard: (state.postcard + 1) % 3 }, "A different detour, equally worth taking.")),
-      roomAction("pin", state.pinnedPostcard === state.postcard ? "This one's pinned" : "Pin this one", () => changeState({ pinnedPostcard: state.postcard }, "A good memory deserves a spot on the wall."), { pressed: state.pinnedPostcard === state.postcard }),
+      roomAction("turn", "Next postcard", () => changeState({ postcard: (state.postcard + 1) % 3 }, "Another little detour."), { icon: "postcards" }),
+      roomAction("pin", state.pinnedPostcard === state.postcard ? "Unpin this one" : "Pin this one", () => {
+        const movingPin = state.pinnedPostcard !== null && state.pinnedPostcard !== state.postcard;
+        const pinnedPostcard = togglePin(state);
+        changeState({ pinnedPostcard }, pinnedPostcard === null ? "Back in the little stack." :
+          movingPin ? "Moved the pin here. The other card is back in the stack." : "A favorite, up on the wall.");
+      }, { pressed: state.pinnedPostcard === state.postcard, icon: "pin" }),
     ],
   },
   plant: {
-    label: "The basil",
-    title: () => "A cutting from a friend.",
-    story: () => "Jo brought it over in a little pot. I sent the pot home full of biscuits. A very good exchange rate.",
-    extra: () => state.watered
-      ? "That's enough water for this visit. We can just appreciate the leaves now."
-      : "It is doing its best. I try to remember that when it looks a little dramatic.",
+    ...storyFields("plant"),
     actions: () => [
-      roomAction("water", state.watered ? "Looking happier" : "Give it a little water", () => changeState({ watered: true }, "A small kindness. Basil noticed."), { disabled: state.watered }),
+      roomAction("water", state.watered ? "Watered for today" : "A sip for the basil", () => changeState({ watered: true }, "Leaves up. A small success."), { disabled: state.watered, icon: "water" }),
     ],
   },
   radio: {
-    label: "Jo's radio",
-    title: () => "It plays. Mostly.",
-    story: () => "Jo asked if I could fix this. I said yes with the confidence of someone who had not opened it yet.",
-    extra: () => `It plays now. The remaining screw is a separate mystery. On the dial: "${tracks[state.track]}," a little original tune made right here in your browser.`,
+    ...storyFields("radio"),
     actions: () => [
-      roomAction("sound", "Play something quiet", () => { void setSound(!soundWanted); }, { sound: true }),
-      roomAction("station", "Try the next station", () => {
+      roomAction("sound", "Play the radio", () => { void setSound(!soundWanted); }, { sound: true, icon: "radio" }),
+      roomAction("station", "Next station", () => {
         const track = (state.track + 1) % tracks.length;
         changeState({ track }, `The dial says "${tracks[track]}."`);
-      }),
+        if (soundWanted) restartMelody();
+      }, { icon: "next" }),
     ],
   },
   lamp: {
-    label: "The little lamp",
-    title: () => "A smaller sort of light.",
-    story: () => "I found it in a secondhand shop under a very ugly clock. The person at the counter said it was too small to be useful.",
-    extra: () => "It makes everything feel less urgent. I think that counts.",
+    ...storyFields("lamp"),
     actions: () => [
-      roomAction("day", "Keep the afternoon", () => changeState({ theme: "day" }, "There's still a little afternoon left."), { pressed: state.theme === "day" }),
-      roomAction("evening", "Put the little lamp on", () => changeState({ theme: "evening" }, "Small lamp. Softer plans."), { pressed: state.theme === "evening" }),
+      roomAction("day", "Afternoon", () => changeState({ theme: "day" }, "A little daylight."), { pressed: state.theme === "day", icon: "sun" }),
+      roomAction("evening", "Lamplight", () => changeState({ theme: "evening" }, "The little lamp is on."), { pressed: state.theme === "evening", icon: "lamp" }),
     ],
   },
   tea: {
-    label: "Tea for two",
-    title: () => "I made two.",
-    story: () => "Optimism, not a head count. I kept the uneven mug because it's the one my friend made.",
-    extra: () => state.tea === "none"
-      ? "Yours is the yellow one. Something fresh, or something warm and a little spicy?"
-      : `A cup of ${state.tea} for you, and a matching one for me. Take the comfortable chair. The other one is holding the laundry.`,
+    ...storyFields("tea"),
     actions: () => [
-      roomAction("mint", "Mint sounds good", () => changeState({ tea: "mint" }, "Two cups of mint. No need to say anything clever."), { pressed: state.tea === "mint" }),
-      roomAction("ginger", "Ginger, please", () => changeState({ tea: "ginger" }, "Ginger it is. Stay until it's cool enough to drink."), { pressed: state.tea === "ginger" }),
+      roomAction("mint", "Mint, please", () => changeState({ tea: "mint" }, "Mint for two. Yours is the yellow cup."), { pressed: state.tea === "mint", icon: "plant" }),
+      roomAction("ginger", "Ginger, please", () => changeState({ tea: "ginger" }, "Ginger for two. A little extra warmth."), { pressed: state.tea === "ginger", icon: "tea" }),
     ],
   },
   book: {
-    label: "The mystery book",
-    title: () => "One more chapter.",
-    story: () => state.bookmarked
-      ? '"The missing key was in the sugar bowl. The inspector decided, just this once, to finish her tea before telling anyone."'
-      : "A gentle mystery. The stakes are low, the village is nosy, and somebody has definitely misplaced a key.",
-    extra: () => state.bookmarked
-      ? "A tiny story written for this room. I like a detective who has her priorities straight."
-      : "Stopped at page 47. The window got interesting. That's allowed.",
+    ...storyFields("book"),
     actions: () => [
-      roomAction("read", state.bookmarked ? "Page marked for later" : "Read a little bit", () => changeState({ bookmarked: true }, "A page, not an assignment. The bookmark is in."), { disabled: state.bookmarked }),
+      roomAction("read", state.bookmarked ? "Remove bookmark" : "Mark this page", () => changeState({ bookmarked: !state.bookmarked }, state.bookmarked ? "Page corner smoothed. Bookmark out." : "The bookmark is in."), { pressed: state.bookmarked, icon: "book" }),
     ],
   },
   mending: {
-    label: "The mending basket",
-    title: () => "These socks have been places.",
-    story: () => "The ferry trip. The walk home. A surprisingly muddy shortcut that was, in retrospect, a field.",
-    extra: () => state.mended
-      ? "I like the repair showing. Something can be a little worn and still worth taking care of."
-      : "They're not finished yet. Most good things around here aren't.",
+    ...storyFields("mending"),
     actions: () => [
-      roomAction("stitch", state.mended ? "A good little repair" : "Add a red stitch", () => changeState({ mended: true }, "One thing finished. Let's not get carried away."), { disabled: state.mended }),
+      roomAction("stitch", state.mended ? "Undo the stitch" : "Add a red stitch", () => changeState({ mended: !state.mended }, state.mended ? "Thread pulled gently back out." : "One bright stitch. Quite proud of that."), { pressed: state.mended, icon: "mending" }),
     ],
   },
   cat: {
-    label: "Crumb",
-    title: () => "Head of seating.",
-    story: () => "Crumb was not invited to the household. Crumb reviewed the household and accepted our application.",
-    extra: () => state.cat === "chair"
-      ? "The chair is now occupied. We are all very grateful for this development."
-      : "Currently supervising the rug. Any suggestion that this is sleeping will be ignored.",
+    ...storyFields("cat"),
     actions: () => [
-      roomAction("chair", state.cat === "chair" ? "Suggest the sunny rug" : "Offer the chair", () => {
+      roomAction("chair", state.cat === "chair" ? "Back to the rug" : "Offer the chair", () => {
         const cat = state.cat === "chair" ? "rug" : "chair";
-        changeState({ cat }, cat === "chair" ? "Crumb moved six inches. A generous compromise." : "The rug has been graciously re-accepted.");
-      }),
+        changeState({ cat }, cat === "chair" ? "Chair accepted. You may carry on." : "Back on the rug, with dignity.");
+      }, { icon: "cat" }),
     ],
   },
 };
 
+const iconPaths = {
+  sun: ["M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z", "M12 2v2m0 16v2M2 12h2m16 0h2M5 5l2 2m10 10 2 2M5 19l2-2M17 7l2-2"],
+  rain: ["M6 14a4 4 0 0 1-1-8 6 6 0 0 1 11-1 4.5 4.5 0 0 1 1 9", "m7 17-1 3m6-3-1 3m6-3-1 3"],
+  window: ["M4 21V8a8 8 0 0 1 16 0v13ZM12 2v19M4 12h16M2 21h20"],
+  postcards: ["m3 5 17-2 2 16-17 2Z", "m7 15 3-5 4 3 3-4 2 5M8 7h1"],
+  pin: ["m9 3 8 3-3 3-1 5-7-2 4-3-1-6Zm0 11-4 7"],
+  plant: ["M8 16h9l-1 6H9Z", "M12 16V5m0 7C3 12 3 4 12 8m1 1c0-8 9-8 7-3-1 3-4 4-7 3"],
+  water: ["M12 2C10 7 5 10 5 15a7 7 0 0 0 14 0c0-5-5-8-7-13ZM8 15c0 3 2 4 4 4"],
+  radio: ["M3 7h18v14H3ZM6 7V4l11-2M6 11v6m3-6v6m3-6v6M16 11h2", "M17 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"],
+  next: ["m5 5 9 7-9 7V5ZM19 5v14"],
+  lamp: ["M8 3h8l4 10H4ZM12 13v8m-4 0h8M18 14v4"],
+  tea: ["M4 9h13v8c0 7-13 7-13 0V9Zm13 2h2c5 0 5 7-2 7M7 5c-2-2 2-3 0-5m6 5c-2-2 2-3 0-5"],
+  book: ["M3 3c4-1 7 0 9 2 2-2 5-3 9-2v16c-4-1-7 0-9 2-2-2-5-3-9-2V3ZM12 5v16M7 7v6l2-2 2 2V7"],
+  mending: ["M8 2h8v11l4 4c3 4-2 7-5 4l-8-6ZM8 5h8M9 12l5 4m-5 0 5-4"],
+  cat: ["M5 10 3 3l6 4c2-1 4-1 6 0l6-4-2 8c5 12-19 13-14-1Z", "m7 12 2 1m6 0 2-1m-6 4 1 1 1-1M6 16H2m16 0h4"],
+  shelf: ["M3 2h18v20H3ZM3 12h18M6 5v7m4-8v8m5-7 2 7M6 16h6v6m3-5h3v5"],
+  tin: ["M4 6c0-4 16-4 16 0v13c0 4-16 4-16 0V6Zm0 0c0 4 16 4 16 0M8 13h8m-6 4h4"],
+  map: ["m2 5 6-3 8 3 6-3v17l-6 3-8-3-6 3V5ZM8 2v17M16 5v17", "M5 11c3-5 8 8 14-2"],
+  drawer: ["M3 4h18v17H3ZM3 10h18M9 15h6M5 21v2m14-2v2"],
+  bicycle: ["M5 13a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm14 0a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z", "m5 17 4-9 5 9H5l12-9 2 9M7 8h5m4-4h2l-1 4"],
+  nine: ["M16 12V7c0-7-10-7-10 0v3c0 6 10 6 10 0m0 2c0 7-2 10-8 10"],
+};
+
+function makeIcon(name) {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("aria-hidden", "true");
+  for (const d of iconPaths[name] ?? iconPaths.tea) {
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", d);
+    svg.append(path);
+  }
+  return svg;
+}
+
 function renderNotebook() {
   if (!selectedObject) return;
   const object = objects[selectedObject];
+  const story = getStory(selectedObject, state);
   const focusedAction = document.activeElement?.dataset.action;
   const hadControlFocus = byId("note-actions").contains(document.activeElement);
-  byId("note-kicker").textContent = "A SMALL THING WITH A STORY";
-  byId("note-number").textContent = String(objectIds.indexOf(selectedObject) + 1).padStart(2, "0");
+  byId("note-kicker").textContent = object.label.toUpperCase();
+  byId("note-number").textContent = selectedObject === "postcards"
+    ? `${state.postcard + 1} / 3`
+    : String(objectIds.indexOf(selectedObject) + 1).padStart(2, "0");
   byId("note-title").textContent = object.title();
   byId("note-body").textContent = object.story();
+  byId("station-label").hidden = selectedObject !== "radio";
+  byId("station-label").textContent = `Sunday FM: ${tracks[state.track]}`;
   byId("note-extra").textContent = object.extra();
   byId("note-result").textContent = noteResult;
+  byId("note-doodle").replaceChildren(makeIcon(selectedObject));
+  byId("note-more").hidden = false;
+  byId("story-link").textContent = story.link;
+  byId("story-link").dataset.destination = story.related;
   byId("note-navigation").hidden = false;
   const controls = object.actions().map((action) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "choice-button";
     button.dataset.action = action.id;
-    button.textContent = action.label;
+    const label = document.createElement("span");
+    label.className = "button-label";
+    label.textContent = action.label;
+    if (action.icon) button.append(makeIcon(action.icon));
+    button.append(label);
     button.disabled = action.disabled ?? false;
     if (action.pressed !== undefined) button.setAttribute("aria-pressed", String(action.pressed));
     if (action.sound) button.dataset.soundControl = "true";
@@ -298,6 +267,19 @@ function render() {
   root.dataset.reducedMotion = String(state.reducedMotion || motionPreference.matches);
   root.dataset.largeText = String(state.largeText);
   root.dataset.contrast = String(state.contrast);
+  root.dataset.route = state.plans.scenic ? "scenic" : "direct";
+  root.dataset.radioPacked = String(state.plans.radio);
+  root.dataset.mugKept = String(state.plans.mug);
+  for (const input of document.querySelectorAll("[data-plan]")) {
+    input.checked = state.plans[input.dataset.plan];
+  }
+  byId("plan-reaction").textContent = planReaction(lastPlan, state);
+  byId("afternoon-caption").textContent = state.theme === "evening"
+    ? (state.weather === "rain" ? "Rain at the window. Lamp on." : "The evening has settled in.")
+    : (state.weather === "rain" ? "A rainy little afternoon." : "A little afternoon at home.");
+  byId("lore-teaser").textContent = state.scraps.includes("nine")
+    ? "A bakery table, a borrowed chair, and the things everyone left behind."
+    : "A biscuit tin, a folded map, and a number that stuck.";
   byId("motion-toggle").checked = state.reducedMotion || motionPreference.matches;
   byId("motion-toggle").disabled = motionPreference.matches;
   byId("size-toggle").checked = state.largeText;
@@ -311,6 +293,7 @@ function render() {
     const found = state.seen.includes(id);
     button.classList.toggle("is-found", found);
     button.setAttribute("aria-pressed", String(selectedObject === id));
+    button.setAttribute("aria-controls", "notebook");
     button.setAttribute("aria-label", `${objects[id].label}${found ? ", discovered" : ", unexplored"}. Read its story.`);
     button.querySelector(".found-label").textContent = found ? "Discovered" : "";
     button.querySelector(".hotspot-dot").textContent = found ? "\u2713" : String(objectIds.indexOf(id) + 1);
@@ -324,11 +307,16 @@ function render() {
     ? "It's yours now. Go on, open it."
     : "A little something, after nine little things.";
   renderNotebook();
+  if (activePrompt) renderResidentReply();
+  if (byId("scraps-dialog").open) renderScrap();
+  if (byId("letter-dialog").open) renderLetter();
   syncSoundControls();
 }
 
 function selectObject(id, { moveToNote = false } = {}) {
+  if (selectedObject !== id) byId("note-more").open = false;
   selectedObject = id;
+  lastHotspot = document.querySelector(`button[data-object="${id}"]`);
   noteResult = "";
   const finished = discover(id);
   render();
@@ -344,6 +332,55 @@ function selectObject(id, { moveToNote = false } = {}) {
   }
 }
 
+function followStory(destination) {
+  if (OBJECT_IDS.includes(destination)) {
+    if (byId("scraps-dialog").open) {
+      dialogOpeners.set(byId("scraps-dialog"), byId("note-title"));
+      byId("scraps-dialog").close();
+    }
+    lastHotspot = document.querySelector(`[data-object="${destination}"]`);
+    selectObject(destination, { moveToNote: true });
+    byId("note-title").focus({ preventScroll: true });
+    byId("note-title").scrollIntoView({
+      block: "nearest",
+      behavior: root.dataset.reducedMotion === "true" ? "instant" : "smooth",
+    });
+  } else if (SCRAP_IDS.includes(destination)) {
+    showScrap(destination);
+  } else {
+    throw new Error(`Unknown story connection: ${destination}`);
+  }
+}
+
+function renderScrap() {
+  const scrap = getScrap(selectedScrap, state);
+  byId("scrap-title").textContent = scrap.title;
+  byId("scrap-body").textContent = scrap.body;
+  byId("scrap-reaction").textContent = scrap.reaction;
+  byId("scrap-related").textContent = scrap.link;
+  byId("scrap-related").dataset.destination = scrap.related;
+  byId("scrap-position").textContent = `${SCRAP_IDS.indexOf(selectedScrap) + 1} / ${SCRAP_IDS.length}`;
+  byId("scrap-doodle").replaceChildren(makeIcon(selectedScrap));
+}
+
+function showScrap(id) {
+  selectedScrap = id;
+  if (!state.scraps.includes(id)) {
+    state.scraps.push(id);
+    persistState();
+  }
+  render();
+  renderScrap();
+  if (!byId("scraps-dialog").open) openDialog(byId("scraps-dialog"));
+  announce(getScrap(id, state).title);
+}
+
+function renderLetter() {
+  const letter = getLetter(state);
+  byId("letter-story").textContent = letter.story;
+  byId("letter-plans").textContent = letter.plans;
+}
+
 function updateDiscoveries() {
   byId("discovery-list").replaceChildren(...objectIds.map((id, index) => {
     const button = document.createElement("button");
@@ -357,9 +394,11 @@ function updateDiscoveries() {
     button.setAttribute("aria-label", `${objects[id].label}, ${state.seen.includes(id) ? "discovered" : "still to explore"}`);
     button.append(mark, label);
     button.addEventListener("click", () => {
+      dialogOpeners.set(byId("discoveries-dialog"), byId("note-title"));
       byId("discoveries-dialog").close();
       lastHotspot = document.querySelector(`[data-object="${id}"]`);
       selectObject(id, { moveToNote: true });
+      byId("note-title").focus({ preventScroll: true });
     });
     return button;
   }));
@@ -394,30 +433,20 @@ for (const button of document.querySelectorAll("[data-close]")) {
   button.addEventListener("click", () => byId(button.dataset.close).close());
 }
 
-function residentReply(prompt) {
-  let reply;
-  if (prompt === "plans") {
-    reply = state.mended
-      ? "One thing finished. Let's not get carried away. Jo's radio can go home tomorrow."
-      : state.weather === "rain"
-        ? "Jo and I usually walk on Sundays. Today the walk may end at the kettle."
-        : "A bike ride with no useful destination. If I bring back bread, that's a bonus.";
-  } else if (prompt === "joy") {
-    reply = state.tea !== "none"
-      ? "Someone sitting long enough for the tea to cool. This, actually."
-      : state.cat === "chair"
-        ? "A cat deciding you're furniture. It's an oddly nice vote of confidence."
-        : "The friend who calls without needing anything. Also, a really good biscuit.";
-  } else {
-    const advice = [
-      "You can be a beginner at something just because it looks fun. No need to get impressive about it.",
-      "Keep the uneven mug. Call the friend. Take the route with the trees.",
-      "Some days, taking care of one small thing is quite enough.",
-      "An unanswered question is not a personal failure. Sometimes it's just a good reason to make tea.",
-    ];
-    reply = advice[adviceIndex++ % advice.length];
-  }
+function renderResidentReply() {
+  const reply = residentLine(activePrompt, state, conversationTurn);
   byId("resident-reply").textContent = `"${reply}"`;
+  for (const button of document.querySelectorAll("[data-prompt]")) {
+    button.setAttribute("aria-pressed", String(button.dataset.prompt === activePrompt));
+  }
+  return reply;
+}
+
+function residentReply(prompt) {
+  if (prompt === activePrompt) conversationTurn++;
+  else conversationTurn = 0;
+  activePrompt = prompt;
+  const reply = renderResidentReply();
   announce(`Friend 9: ${reply}`);
 }
 
@@ -462,23 +491,35 @@ function syncSoundControls() {
   byId("sound-toggle").setAttribute("aria-pressed", String(playing));
   byId("sound-toggle").disabled = audioBusy;
   for (const button of document.querySelectorAll("[data-sound-control]")) {
-    button.textContent = audioBusy ? "One moment..." : playing ? "Let it be quiet" : "Play something quiet";
+    button.querySelector(".button-label").textContent = audioBusy ? "One moment..." : playing ? "Pause the radio" : "Play the radio";
     button.disabled = audioBusy;
     button.setAttribute("aria-pressed", String(playing));
   }
 }
 
-async function closeSound() {
+function stopMelody() {
   clearInterval(audioTimer);
-  const previous = audioContext;
-  audioContext = null;
-  audioMaster = null;
   for (const note of activeNotes) {
     note.oscillator.onended = null;
+    note.oscillator.stop();
     note.oscillator.disconnect();
     note.gain.disconnect();
   }
   activeNotes.clear();
+}
+
+function restartMelody() {
+  if (!soundWanted || audioContext?.state !== "running") return;
+  stopMelody();
+  scheduleMelody();
+  audioTimer = setInterval(scheduleMelody, 3100);
+}
+
+async function closeSound() {
+  stopMelody();
+  const previous = audioContext;
+  audioContext = null;
+  audioMaster = null;
   if (previous && previous.state !== "closed") await previous.close();
 }
 
@@ -494,7 +535,7 @@ async function setSound(enabled) {
       const AudioContextClass = window.AudioContext ?? window.webkitAudioContext;
       if (!AudioContextClass) {
         soundWanted = false;
-        announce("This browser can't play the little radio. All nine discoveries are still yours.");
+        announce("This browser can't play the radio. You can still explore its story.", true);
         return;
       }
       audioContext = new AudioContextClass();
@@ -521,7 +562,7 @@ async function setSound(enabled) {
       throw error;
     }
     console.warn("[friend9] Radio could not play:", error.name);
-    announce("The radio couldn't start here. Everything else in the room is still open.");
+    announce("The radio couldn't start. Try pressing Play again.", true);
   } finally {
     audioBusy = false;
     syncSoundControls();
@@ -538,6 +579,28 @@ for (const button of document.querySelectorAll("[data-object]")) {
 for (const button of document.querySelectorAll("[data-prompt]")) {
   button.addEventListener("click", () => residentReply(button.dataset.prompt));
 }
+for (const button of document.querySelectorAll("[data-scrap]")) {
+  button.addEventListener("click", () => showScrap(button.dataset.scrap));
+}
+for (const input of document.querySelectorAll("[data-plan]")) {
+  input.addEventListener("change", () => {
+    const id = input.dataset.plan;
+    if (!PLAN_IDS.includes(id)) throw new Error(`Unknown little plan: ${id}`);
+    lastPlan = id;
+    activePrompt = `plan:${id}`;
+    conversationTurn = 0;
+    changeState({ plans: { ...state.plans, [id]: input.checked } },
+      planReaction(id, { ...state, plans: { ...state.plans, [id]: input.checked } }));
+  });
+}
+byId("story-link").addEventListener("click", (event) => followStory(event.currentTarget.dataset.destination));
+byId("scrap-related").addEventListener("click", (event) => followStory(event.currentTarget.dataset.destination));
+byId("previous-scrap").addEventListener("click", () => {
+  showScrap(SCRAP_IDS[(SCRAP_IDS.indexOf(selectedScrap) + SCRAP_IDS.length - 1) % SCRAP_IDS.length]);
+});
+byId("next-scrap").addEventListener("click", () => {
+  showScrap(SCRAP_IDS[(SCRAP_IDS.indexOf(selectedScrap) + 1) % SCRAP_IDS.length]);
+});
 byId("back-to-room").addEventListener("click", () => {
   const target = lastHotspot ?? document.querySelector("[data-object]");
   target.focus();
@@ -557,6 +620,7 @@ byId("discovery-toggle").addEventListener("click", () => {
 });
 byId("envelope-button").addEventListener("click", () => {
   if (state.seen.length === 9) {
+    renderLetter();
     openDialog(byId("letter-dialog"));
   } else {
     updateDiscoveries();
@@ -579,16 +643,27 @@ byId("contrast-toggle").addEventListener("change", (event) => changeState(
   { contrast: event.target.checked }, event.target.checked ? "A little more definition." : "Back to the softer outlines.",
 ));
 byId("reset-visit").addEventListener("click", () => {
-  const preferences = { reducedMotion: state.reducedMotion, largeText: state.largeText, contrast: state.contrast };
-  state = { ...initialState(), ...preferences };
+  openDialog(byId("reset-dialog"));
+});
+byId("confirm-reset").addEventListener("click", () => {
+  byId("reset-dialog").close();
+  state = resetDiscoveries(state, prefersEvening());
   selectedObject = null;
   noteResult = "";
-  byId("note-kicker").textContent = "A NOTE FROM THE RESIDENT";
+  activePrompt = null;
+  conversationTurn = 0;
+  lastPlan = null;
+  byId("note-kicker").textContent = "MAKE YOURSELF AT HOME";
   byId("note-number").textContent = "f9";
   byId("note-title").textContent = "Oh, hello again.";
-  byId("note-body").textContent = "Same room. Fresh cup. No need to remember where you left off.";
-  byId("note-extra").textContent = "The little things are ready to be found again.";
+  byId("note-body").textContent = "Same room. Fresh cup. Crumb would like you to know the chair is still under negotiation.";
   byId("note-result").textContent = "";
+  byId("station-label").hidden = true;
+  byId("note-more").hidden = true;
+  byId("note-more").open = false;
+  byId("note-doodle").replaceChildren(makeIcon("tea"));
+  byId("resident-reply").textContent = '"Jo says I collect detours. I say a detour has never asked me to fix its printer."';
+  for (const button of document.querySelectorAll("[data-prompt]")) button.setAttribute("aria-pressed", "false");
   byId("note-actions").replaceChildren();
   byId("note-navigation").hidden = true;
   persistState();
@@ -602,11 +677,24 @@ document.addEventListener("visibilitychange", () => {
 });
 window.addEventListener("pagehide", () => { void setSound(false); });
 document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    const settings = document.querySelector(".settings");
+    if (settings.open && !document.querySelector("dialog[open]")) {
+      settings.open = false;
+      settings.querySelector("summary").focus();
+    }
+  }
   if (event.key !== "9" || event.repeat || event.ctrlKey || event.metaKey || event.altKey ||
       document.querySelector("dialog[open]") ||
       event.target instanceof HTMLElement && event.target.closest("input, textarea, select, [contenteditable]")) return;
   lastHotspot = document.querySelector('[data-object="cat"]');
   selectObject("cat", { moveToNote: true });
+});
+document.addEventListener("pointerdown", (event) => {
+  const settings = document.querySelector(".settings");
+  if (settings.open && !settings.contains(event.target) && !document.querySelector("dialog[open]")) {
+    settings.open = false;
+  }
 });
 render();
 root.dataset.ready = "true";
