@@ -1,0 +1,315 @@
+<svg class="room-illustration" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 790" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="wall-wash" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#ecead5"/><stop offset="1" stop-color="#d7dcc2"/>
+    </linearGradient>
+    <linearGradient id="floor-wash" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#d9bc90"/><stop offset="1" stop-color="#c19e77"/>
+    </linearGradient>
+    <linearGradient id="window-wash" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#a8c8c1"/><stop offset="1" stop-color="#e4dfb3"/>
+    </linearGradient>
+    <radialGradient id="lamplight">
+      <stop stop-color="#ffe4a0" stop-opacity=".75"/><stop offset="1" stop-color="#f8d486" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="wall-dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="8" r=".8" fill="#6b755a" opacity=".09"/>
+      <circle cx="18" cy="19" r=".6" fill="#6b755a" opacity=".08"/>
+    </pattern>
+    <pattern id="rug-lines" width="13" height="13" patternUnits="userSpaceOnUse" patternTransform="rotate(-13)">
+      <path d="M0 0h13" stroke="#ede1bd" stroke-width="3" opacity=".6"/>
+    </pattern>
+    <clipPath id="window-clip"><rect x="100" y="88" width="298" height="287" rx="60"/></clipPath>
+    <g id="crumb-drawing" stroke="#685342" stroke-width="2.5" stroke-linejoin="round">
+      <path d="M-55 17c-23-22-2-47 24-37 18-22 57-19 71 6 26 1 45 31 20 43-28 16-91 15-112-3" fill="#ddb88c"/>
+      <path d="M-21-12-29-42-5-28 11-31 29-45 30-15c7 31-48 42-51 3Z" fill="#e4c49a"/>
+      <path d="m-24-35 15 10m32-12-11 11" stroke="#ba8f71" stroke-width="4"/>
+      <path d="M-53 28c-31-8-45 10-18 17 21 6 45-3 64-10" fill="#c4936f" stroke-width="7" stroke-linecap="round"/>
+      <path d="m-13-8 8 2m17-2 8-3m-18 9 5 1-2 5Z" fill="#685342" stroke-linecap="round"/>
+      <path d="m-7 10-18 1m18 4-19 5M17 9l18-4m-17 9 19 2" stroke-width="1.5"/>
+      <path d="M39-8 45 3m1-3 6 7M-2-28l-3 10m10-11-1 10" fill="none" stroke="#b3815e" stroke-width="4"/>
+    </g>
+  </defs>
+
+  <!-- Paper, plaster, and a floor that has seen a few good afternoons. -->
+  <path d="M0 0h1200v560L0 610Z" fill="url(#wall-wash)"/>
+  <path d="M0 0h1200v570H0Z" fill="url(#wall-dots)"/>
+  <path d="M1070 0h130v584l-130-33Z" fill="#ccd1b6"/>
+  <path d="m0 554 1070-15 130 45v206H0Z" fill="url(#floor-wash)"/>
+  <path d="m0 548 1070-15 130 43v13l-130-43L0 561Z" fill="#bda87e"/>
+  <g fill="none" stroke="#a68560" stroke-width="1.5" opacity=".5">
+    <path d="m0 625 1200-17M0 707l1200-33M246 557 85 790M615 548l-5 242M945 543l219 247"/>
+    <path d="m0 777 1200-40M430 619l-29 79m374-86 34 71m-354 16-30 70"/>
+  </g>
+  <path d="m1070 0 0 536" fill="none" stroke="#bac4a6" stroke-width="3"/>
+
+  <!-- The view is imaginary, and the weather is entirely up to the visitor. -->
+  <path d="M75 395V144a83 83 0 0 1 83-83h188a83 83 0 0 1 83 83v251Z" fill="#ba9870" stroke="#8d7657" stroke-width="3"/>
+  <path d="M92 388V147a67 67 0 0 1 67-67h185a67 67 0 0 1 67 67v241Z" fill="#f2e9c9"/>
+  <g clip-path="url(#window-clip)">
+    <rect class="window-sky" x="100" y="88" width="298" height="300" fill="url(#window-wash)"/>
+    <circle class="window-sun" cx="333" cy="139" r="34" fill="#f8e6a7"/>
+    <g fill="#f5efd7" opacity=".58"><ellipse cx="175" cy="137" rx="44" ry="12"/><ellipse cx="155" cy="129" rx="21" ry="12"/><ellipse cx="281" cy="218" rx="44" ry="10"/></g>
+    <path class="window-hills" d="M74 316c76-88 104-87 164-46s112-62 179-22v140H74Z" fill="#94ad87"/>
+    <path d="M82 353c70-49 136-31 177-15 55-55 108-40 155-24v84H82Z" fill="#6f9376"/>
+    <path d="M228 385c-19-35 11-43 40-48 15-3 13-14 7-20" fill="none" stroke="#e9d9ac" stroke-width="12" stroke-linecap="round"/>
+    <g fill="#547860">
+      <path d="m125 312 14-44 16 44Zm12-18 2-45 15 51M358 302l19-55 24 55Z"/>
+      <rect x="139" y="297" width="5" height="40"/><rect x="377" y="282" width="6" height="42"/>
+    </g>
+    <g class="window-stars" fill="#f4e7b9">
+      <circle cx="160" cy="113" r="2.3"/><circle cx="228" cy="170" r="2"/><circle cx="321" cy="199" r="2.5"/><circle cx="365" cy="123" r="2"/>
+      <path d="m302 105 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/>
+      <path d="M347 151a21 21 0 1 1-22-32 20 20 0 0 0 22 32Z"/>
+    </g>
+    <g class="window-rain" fill="none" stroke="#f2f4dc" stroke-width="2" stroke-linecap="round" opacity=".8">
+      <path d="m135 115-9 19m55-16-8 19m59-27-8 19m63 16-8 19m-88 13-9 19m-53 9-9 19m79 4-8 19m59-42-8 19m77-53-8 19m46 34-9 19m-214 20-9 19m55 13-8 19m59-30-8 19m61 0-9 19m45-66-9 19m-99 73-8 19m-74-2-8 19m159-14-9 19"/>
+    </g>
+  </g>
+  <path d="M250 81v303M94 230h309" fill="none" stroke="#a98a64" stroke-width="13"/>
+  <path d="M246 81v303M94 226h309" fill="none" stroke="#e7d4a9" stroke-width="5"/>
+  <path d="M65 387h380v17H65Z" fill="#bb9468" stroke="#8d7657" stroke-width="2.5"/>
+  <path d="M46 72c10 85 13 191-4 291l30 10c13-86 11-198 6-294Z" fill="#eee4c1" stroke="#cfc5a4" stroke-width="2"/>
+  <path d="M53 79c12 82 13 211-2 277M65 79c7 78 10 201 0 273" fill="none" stroke="#d6caa6" stroke-width="2"/>
+
+  <!-- Mementos of detours, not a wall of credentials. -->
+  <g transform="translate(529 91) rotate(-7)">
+    <rect x="-5" y="3" width="127" height="148" rx="2" fill="#697058" opacity=".11"/>
+    <rect width="119" height="144" rx="2" fill="#f9f2da" stroke="#c9b998" stroke-width="2"/>
+    <rect class="postcard-scene" x="9" y="10" width="101" height="98" fill="#a4c1b1"/>
+    <g class="postcard-ferry">
+      <path d="m9 89 31-41 30 31 19-23 21 20v32H9Z" fill="#718e6a"/>
+      <path d="m40 48 13 17-21-6Z" fill="#ebe5c7"/>
+      <path d="M9 97h101v11H9Z" fill="#729b9b"/>
+      <path d="M57 89h35l-7 9H64Z" fill="#f2e6c7"/><path d="M67 85V73h15v12" fill="#f2e6c7"/>
+    </g>
+    <g class="postcard-bakery">
+      <path d="M22 101V43h76v58Z" fill="#b77354"/>
+      <path d="M19 43h83V31H19Z" fill="#eee3bc"/>
+      <path d="M22 43h76" stroke="#819478" stroke-width="10" stroke-dasharray="10 6"/>
+      <path d="M53 101V64h23v37" fill="#655e48"/>
+      <rect x="31" y="60" width="16" height="20" fill="#f1d795"/>
+      <path d="M9 102h101v6H9Z" fill="#c5b08a"/>
+    </g>
+    <g class="postcard-path">
+      <path d="M9 84c31-22 61-16 101 4v20H9Z" fill="#527c5c"/>
+      <path d="M66 108c-20-26 12-23 14-42" fill="none" stroke="#ead7ab" stroke-width="8"/>
+      <path d="m20 82 13-41 15 41Zm59-22 10-35 13 35Z" fill="#4a7254"/>
+      <path d="M33 69v27m56-47v31" stroke="#625d42" stroke-width="3"/>
+    </g>
+    <text x="59" y="128" text-anchor="middle" fill="#74624d" font-family="Georgia,serif" font-size="12">the long way home</text>
+    <path d="M37-7h47v17H37Z" fill="#d6c28a" opacity=".8"/>
+  </g>
+  <g transform="translate(665 163) rotate(9)">
+    <rect width="100" height="116" fill="#f9f0d5" stroke="#c6b797" stroke-width="2"/>
+    <rect x="8" y="9" width="84" height="76" fill="#ccad86"/>
+    <path d="M21 77V32h56v45" fill="#b77354"/><path d="M16 39h66V28H16Z" fill="#ede1b8"/>
+    <path d="M37 77V51h21v26" fill="#665e48"/><circle cx="53" cy="66" r="2" fill="#ead6a6"/>
+    <path d="M17 38h65" stroke="#819478" stroke-width="8" stroke-dasharray="10 6"/>
+    <text x="50" y="103" text-anchor="middle" fill="#74624d" font-family="Georgia,serif" font-size="11">worth the detour</text>
+    <path d="M31-6h39v16H31Z" fill="#c8cc9b" opacity=".85"/>
+  </g>
+  <g class="postcard-pin" transform="translate(585 99)">
+    <circle r="8" fill="#b7513b" stroke="#833c2b" stroke-width="2"/><path d="m0 8-3 10" stroke="#736653" stroke-width="2"/>
+  </g>
+  <g transform="translate(844 72) rotate(3)">
+    <rect width="203" height="103" rx="3" fill="#ae8966" stroke="#8d7152" stroke-width="3"/>
+    <rect x="8" y="8" width="187" height="87" fill="#efe8c9"/>
+    <path d="m27 38 14 10 24-24" fill="none" stroke="#6c885a" stroke-width="2.5"/>
+    <text x="100" y="38" text-anchor="middle" font-family="Georgia,serif" fill="#555e44" font-size="14">take the</text>
+    <text x="101" y="60" text-anchor="middle" font-family="Georgia,serif" font-style="italic" fill="#555e44" font-size="23">long way home</text>
+    <path d="M65 77c24 7 49-9 67-3" fill="none" stroke="#9b9471" stroke-width="1.5"/>
+  </g>
+
+  <!-- A small shelf and the bicycle helmet waiting for the next trip. -->
+  <g stroke="#806d52" stroke-width="2.5" stroke-linejoin="round">
+    <path d="M32 465h157v154H32Z" fill="#b18e65"/>
+    <path d="M42 474h137v135H42Z" fill="#8f7857"/>
+    <path d="M27 536h167v12H27ZM27 611h167v12H27Z" fill="#c8a777"/>
+    <path d="M51 480h21v56H51Z" fill="#9fa97b"/><path d="M75 488h14v48H75Z" fill="#d8be8a"/>
+    <path d="m97 480 18-3 12 56-18 3Z" fill="#b77961"/>
+    <path d="M131 491h23v45h-23Z" fill="#74968c"/><path d="M158 485h13v51h-13Z" fill="#ded5b6"/>
+    <path d="M48 559h53v50H48Z" fill="#d6be99"/><path d="m44 559 31-21 30 21Z" fill="#e2cea6"/>
+    <path d="M62 581h25v16H62Z" fill="#bc9870"/>
+    <path d="M114 582h59v13h-59Zm8 13h51v14h-51Z" fill="#9ba47e"/>
+  </g>
+  <g transform="translate(1120 430)" stroke="#69644d" stroke-width="3" stroke-linecap="round">
+    <path d="M-13-15v-53m-12 12 13-13 11 13" fill="none"/>
+    <path d="M-54 7c-1-69 88-76 88 0Z" fill="#b66f52"/>
+    <path d="M-46 10h82v14h-82Z" fill="#dfb788"/>
+    <path d="M-38-12c12-17 17-14 16 3m14-21c8-11 14-8 14 4m9 4c10 1 14 7 14 17" fill="none" stroke="#774f3e" stroke-width="5"/>
+    <path d="M-41 24c17 30 47 30 61 0" fill="none"/>
+  </g>
+
+  <!-- The rug is large enough for exactly one extremely entitled cat. -->
+  <ellipse cx="682" cy="694" rx="338" ry="67" fill="#b29272" opacity=".22"/>
+  <ellipse cx="671" cy="679" rx="341" ry="75" fill="#c28d72" stroke="#a97e63" stroke-width="2"/>
+  <ellipse cx="671" cy="679" rx="316" ry="60" fill="#dfb49a" stroke="#eacead" stroke-width="5"/>
+  <ellipse cx="671" cy="679" rx="300" ry="51" fill="url(#rug-lines)"/>
+  <path d="M623 650c-13 17 11 43 44 44 28 1 58-22 47-39" fill="none" stroke="#bd8d6f" stroke-width="2"/>
+
+  <!-- A real sit-down sort of chair. -->
+  <ellipse cx="937" cy="675" rx="137" ry="28" fill="#766e55" opacity=".2"/>
+  <g stroke="#536952" stroke-width="3" stroke-linejoin="round">
+    <path d="m848 596-15 88h18l26-78m156-17 29 88h17l-15-94" fill="#927655" stroke="#776248"/>
+    <path d="M805 453c-14-57-2-114 26-139 20-19 138-24 164 1 36 34 49 100 43 157l-42 114-162-10Z" fill="#82966e"/>
+    <path d="M832 457c-19-73-9-114 25-130 25-11 92-9 117 5 25 16 37 64 32 116" fill="#9ba97e"/>
+    <path d="M822 516c-54-49-59-7-51 30l15 57c5 14 33 28 64 20h172c35 0 69-25 69-46v-66c0-31-36-44-48-11l-16 34Z" fill="#6d8562"/>
+    <path d="M803 532c24-28 162-47 223-12l12 49c-35 27-174 25-220 1Z" fill="#a3ae81"/>
+    <path d="M791 513c-17-25-41-7-29 25 10 25 18 27 28 13Zm248-16c11-29 40-21 36 7-5 30-11 43-27 33Z" fill="#8b9e73"/>
+    <path d="M822 587c51 17 125 20 186 3" fill="none" stroke="#536952" stroke-width="2"/>
+  </g>
+  <path d="M1017 367c51-12 67 26 48 64l-52 18-12-64Z" fill="#cd9f7b" stroke="#99795c" stroke-width="2.5"/>
+  <path d="m1025 378 25 7m-28 5 29 9m-31 6 26 9" stroke="#e5c8a0" stroke-width="4"/>
+
+  <!-- Friend 9: an imagined resident, no professor costume required. -->
+  <g stroke="#5d4f3e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M878 491c-11 37-4 83 15 91l61 23 16-26-42-29 10-51Z" fill="#595e5b"/>
+    <path d="M945 482c35 12 48 39 25 70l-35 46-24-16 18-49-34-4Z" fill="#676b61"/>
+    <path d="m912 580-14 21 27 18 18-23Z" fill="#e1c491"/>
+    <path d="m953 581 25 10-11 32-28-8Z" fill="#e1c491"/>
+    <path d="m907 591 26 16m-30-7 25 16m22-21 24 9m-27-1 24 9" stroke="#a86e55" stroke-width="4"/>
+    <path d="M899 602c-9-5-21 3-31 13-14 13-5 23 10 21l40-16Z" fill="#b18668"/>
+    <path d="M940 614c-16 5-22 17-16 25 8 13 30 11 48-8l-5-12Z" fill="#b18668"/>
+    <path d="M866 372c-20 13-33 43-22 79l17 55c32 14 100 11 119-14l-6-85c-4-44-64-59-108-35Z" fill="#bb8065"/>
+    <path d="M906 367v128m-33-115 25 28m46-27-29 27" fill="none" stroke="#8d604d" stroke-width="3"/>
+    <path d="M856 462c-5-28-13-48-3-64m109 17 6 48" fill="none" stroke="#d8a181" stroke-width="4"/>
+    <circle cx="912" cy="424" r="2.4" fill="#6f604b"/><circle cx="913" cy="454" r="2.4" fill="#6f604b"/>
+    <path d="M891 349v27c6 17 34 15 41 0l-3-31Z" fill="#c48f6b"/>
+    <path d="M872 313c-15-31 7-70 42-71 45-1 65 33 49 72l-3 29c-7 39-57 46-78 11Z" fill="#d0a17a"/>
+    <path d="M876 315c-20-14-9-51 5-60 15-24 45-29 68-8 23-4 39 26 18 64l-8-9c7-28-11-21-18-39-8 21-37 19-58 17l4 26Z" fill="#4c5147"/>
+    <path d="M880 309c-18-14-22 16-6 22l9-1m77-20c18-10 17 18 3 23l-4-1" fill="#ca9971"/>
+    <path d="M890 299c7-4 13-4 20-1m20-3c7-4 13-2 17 1" fill="none" stroke="#4c5147" stroke-width="3"/>
+    <g fill="none" stroke="#4f5547" stroke-width="3">
+      <ellipse cx="899" cy="316" rx="16" ry="12" transform="rotate(4 899 316)"/>
+      <ellipse cx="940" cy="315" rx="16" ry="12" transform="rotate(-4 940 315)"/>
+      <path d="M915 313h9m-41-1-8-4m81 2 8-5"/>
+    </g>
+    <path d="M897 317h3m38-1h3" stroke="#433e32" stroke-width="4"/>
+    <path d="m918 317-3 17 6 2" fill="none" stroke="#a97858" stroke-width="2"/>
+    <path d="M910 349c7 5 16 4 22-2" fill="none" stroke="#785741" stroke-width="2"/>
+    <path d="M893 338h8m35-2h8" stroke="#c48b6d" stroke-width="6"/>
+    <path d="M880 424c-24 10-29 31-8 39l34 3 6-19-24-5" fill="#d0a17a"/>
+    <g class="resident-reading-hand">
+      <path d="M954 431c28 0 39 13 28 28-6 10-30 14-44 4l-8-16Z" fill="#d0a17a"/>
+    </g>
+    <g transform="translate(895 419) rotate(10)">
+      <path d="m0 0 39 5 41-12v63L40 70 0 55Z" fill="#567d73"/>
+      <path d="m6 3 34 7 33-10v51L40 63 6 51Z" fill="#eee1ba" stroke="#c0ad86" stroke-width="1.5"/>
+      <path d="M40 10v53M11 17l22 5m-22 7 22 5m-22 7 22 5m14-26 21-7m-21 18 21-7m-21 18 21-7" fill="none" stroke="#a39472" stroke-width="1.4"/>
+      <path class="book-bookmark" d="M64-3v33l-6-5-5 9V1Z" fill="#b95543" stroke="#984330" stroke-width="1"/>
+    </g>
+    <g class="resident-mug">
+      <path d="M973 434c26 0 32-12 18-22l-15 1-19 20" fill="#d0a17a"/>
+      <path d="M970 382h30v29c0 18-30 18-30 0Z" fill="#e3c980"/>
+      <path d="M1000 388c17-4 18 18 0 18" fill="none" stroke="#b39e64" stroke-width="5"/>
+      <ellipse cx="985" cy="383" rx="14" ry="4" fill="#896844" stroke-width="1"/>
+    </g>
+    <path class="mended-thread" d="m951 601 13 4-4 12-13-5Zm-2-3-4 18m19-14-3 18m-15-14 19 5m-21 1 19 5" fill="#b25440" stroke="#dcb190" stroke-width="1.5"/>
+  </g>
+
+  <!-- A desk with enough space for a visitor's cup. -->
+  <ellipse cx="580" cy="662" rx="235" ry="29" fill="#8a7357" opacity=".12"/>
+  <g stroke="#81674c" stroke-width="3" stroke-linejoin="round">
+    <path d="m390 537-24 129h18l38-129m328-11 20 139h18l-6-136" fill="#a27f55"/>
+    <path d="M357 500 729 468l83 45-393 42Z" fill="#ddbb83"/>
+    <path d="m357 500 62 55 393-42v18l-393 44-62-55Z" fill="#bc9360"/>
+    <path d="m419 555 0 20" fill="none"/>
+    <path d="m431 552 122-13v35l-122 13Z" fill="#b68b5b"/>
+    <path d="m482 561 25-2" fill="none" stroke="#755d40" stroke-width="4"/>
+  </g>
+  <path d="m394 516 38 5 12 15m127-38 29 1m121 15-62 8m-61 6-88 9" fill="none" stroke="#b08a5c" stroke-width="1.5" opacity=".5"/>
+
+  <!-- Basil: a cutting from a friend, and a modest responsibility. -->
+  <g transform="translate(356 382)" stroke="#52724d" stroke-width="2" stroke-linecap="round">
+    <g class="plant-droopy" fill="#75965e">
+      <path d="M-1 9c-2-29-9-48-25-65m27 53c18-22 32-41 36-63m-34 68c-5-46 0-69 13-88" fill="none" stroke-width="4"/>
+      <path d="M-14-26c-34-39-56-23-44-8 9 13 24 14 44 8Zm-6-21c-29-11-29-32-11-27 13 3 12 16 11 27ZM14-30c28-33 47-24 39-7-7 14-24 13-39 7Zm1-20c-6-28 2-43 15-29 8 10-1 22-15 29ZM5-68c-17-32 2-43 12-29 7 10-4 22-12 29Z"/>
+    </g>
+    <g class="plant-happy" fill="#6c9557">
+      <path d="M0 9V-75m1 42-27-34m26 24 30-34" fill="none" stroke-width="4"/>
+      <path d="M-1-31c-34-9-45-28-27-32 19-4 24 13 27 32Zm0-25c-24-22-23-40-8-37 15 3 13 20 8 37Zm4 14c33-8 51-31 28-31-18 0-29 19-28 31Zm0-24c22-31 13-46 2-35-9 9-7 23-2 35Zm-30 0c-22-30-40-25-33-11 5 11 22 14 33 11Zm54-9c25-28 42-19 31-6-8 9-19 8-31 6Z"/>
+    </g>
+    <path d="M-32 2h65l-8 45h-49Z" fill="#b87150" stroke="#89583f" stroke-width="2.5"/>
+    <path d="M-35-4h71v12h-71Z" fill="#cb8a62" stroke="#89583f" stroke-width="2.5"/>
+    <path d="m-29 45 6 4h47l8-4" fill="none" stroke="#966043" stroke-width="5"/>
+    <rect x="-17" y="16" width="35" height="16" rx="2" fill="#e1bd88" stroke="none"/>
+    <text x="0" y="28" text-anchor="middle" fill="#6e583b" stroke="none" font-family="Georgia,serif" font-size="11">basil</text>
+  </g>
+
+  <!-- Jo's repaired radio, with one remaining screw. -->
+  <g transform="translate(427 386)" stroke="#5b6754" stroke-width="2.5" stroke-linejoin="round">
+    <path d="M22 8V-9c0-17 99-17 99 0V8" fill="none" stroke="#8b7658" stroke-width="7"/>
+    <rect x="-5" y="4" width="153" height="97" rx="10" fill="#87765b"/>
+    <rect width="145" height="96" rx="10" fill="#8d9f83"/>
+    <rect x="11" y="20" width="77" height="62" rx="5" fill="#52695d"/>
+    <g stroke="#a3b192" stroke-width="2"><path d="M21 28v46m9-46v46m9-46v46m9-46v46m9-46v46m9-46v46m9-46v46"/></g>
+    <rect x="99" y="19" width="33" height="18" rx="2" fill="#e4d2a6"/>
+    <path d="M104 29h22" stroke="#998367" stroke-width="1.5"/>
+    <path class="radio-needle" d="M105 24v9" stroke="#b34e38" stroke-width="2"/>
+    <circle cx="114" cy="64" r="15" fill="#c6b88e"/>
+    <path d="m114 53-3 9" stroke="#6b6953" stroke-width="2"/>
+    <circle class="radio-light" cx="128" cy="10" r="3" fill="#ced0a4" stroke="none"/>
+    <text x="51" y="13" font-family="monospace" text-anchor="middle" font-size="8" fill="#f0e7ca" stroke="none">SUNDAY FM</text>
+  </g>
+  <g transform="translate(514 495) rotate(-5)">
+    <path d="M0 0h68v24H0Z" fill="#ede1b0"/><text x="34" y="15" text-anchor="middle" fill="#79684e" font-family="Georgia,serif" font-size="10">return to Jo!</text>
+  </g>
+  <path d="m594 487 6 2m-3-5-1 8" stroke="#6f6c58" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- The lamp can make even this afternoon a little softer. -->
+  <g stroke="#726a49" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="688" cy="486" rx="46" ry="10" fill="#a3a270"/>
+    <path d="M688 482V335" fill="none" stroke="#8d8660" stroke-width="9"/>
+    <path d="M644 269h88l36 75H609Z" fill="#d0bd76"/>
+    <path d="m647 270-18 66m33-66-8 66m47-66 12 66m-29-66 1 66m31-66 26 66" fill="none" stroke="#e5d89f" stroke-width="2"/>
+    <ellipse cx="688" cy="344" rx="78" ry="10" fill="#eee0a5"/>
+    <path d="M746 351v35" fill="none" stroke-width="2"/><circle cx="746" cy="390" r="5" fill="#aa8060"/>
+  </g>
+
+  <!-- Two mismatched cups are a good kind of planning ahead. -->
+  <g stroke="#917355" stroke-width="2.5" stroke-linejoin="round">
+    <ellipse cx="687" cy="515" rx="89" ry="20" fill="#ad8259"/>
+    <ellipse cx="687" cy="510" rx="87" ry="17" fill="#d4b087"/>
+    <path d="M626 465h42v29c0 24-42 24-42 0Z" fill="#87a18a"/>
+    <path d="M668 470c27-7 27 26 0 22" fill="none" stroke="#72907a" stroke-width="6"/>
+    <ellipse cx="647" cy="465" rx="21" ry="6" fill="#ecd9ac"/>
+    <ellipse cx="647" cy="466" rx="16" ry="3.5" fill="#88663e" stroke="none"/>
+    <path d="m628 480 6 0m-5 7 5 0" stroke="#bbccaa" stroke-width="2"/>
+    <path d="M710 478h38v23c0 22-38 22-38 0Z" fill="#e5c57c"/>
+    <path d="M748 484c23-5 25 22 0 19" fill="none" stroke="#c6a365" stroke-width="5"/>
+    <ellipse cx="729" cy="478" rx="19" ry="5" fill="#f1e3bc"/>
+    <ellipse class="tea-filled tea-color" cx="729" cy="479" rx="15" ry="3" fill="#b57436" stroke="none"/>
+    <path d="M737 490v22l8 4v-9Z" fill="#f7eacb" stroke="#ad9671" stroke-width="1.3"/>
+    <ellipse cx="688" cy="506" rx="10" ry="4" fill="#c9a675"/><path d="m682 506 12-2m-11 4 10-2" stroke="#a98558" stroke-width="1"/>
+  </g>
+  <g class="tea-steam" fill="none" stroke="#faf1d0" stroke-width="3" stroke-linecap="round" opacity=".7">
+    <path d="M639 450c-17-18 14-24 1-42m15 42c-10-15 13-24 2-35M724 462c-14-20 13-27 0-39"/>
+  </g>
+
+  <!-- The basket and its deliberately visible repair. -->
+  <g transform="translate(245 624)" stroke="#947455" stroke-width="2.5" stroke-linejoin="round">
+    <ellipse cx="0" cy="70" rx="85" ry="19" fill="#947455" opacity=".14" stroke="none"/>
+    <path d="M-72-3h143L53 67H-54Z" fill="#c9a36f"/>
+    <path d="m-67 14 134 0m-129 15h122m-118 15H59m-113 14H54m-99-61 9 67m15-67 6 70m16-70v70m22-70-5 70m28-70-10 70" fill="none" stroke="#aa8457" stroke-width="2"/>
+    <ellipse cy="-3" rx="72" ry="19" fill="#8f7654"/>
+    <path d="M-43-5c-26-38 1-56 21-37 6-43 54-33 52-6 46-7 40 51 1 39Z" fill="#d9c09b" stroke="#b69b75"/>
+    <path d="M-6-45h35v44l24 12c10 13-4 27-17 19L-8 10Z" fill="#7d9581" stroke="#587462"/>
+    <path d="M-5-34h33m-33 8h33" stroke="#ced1a3" stroke-width="4"/>
+    <path d="m7-5 14 5-3 12-14-4Z" fill="#596e5d" stroke="none"/>
+    <path class="mended-thread" d="m5-6 19 6m-21 0 19 6m-21 0 19 6M6-10 0 13m12-19-5 22m12-20-6 21" fill="none" stroke="#bb5d49" stroke-width="2.5"/>
+    <circle cx="-37" cy="-1" r="17" fill="#bb6a55" stroke="#934d3d"/>
+    <path d="m-50-6 26 8m-25-1 21 8m-23-18 27 6m-16-10 3 31" fill="none" stroke="#dc9c76" stroke-width="2"/>
+    <path d="m-36-16 0-17m-11 16-11-14" stroke="#bb9f72" stroke-width="3"/>
+    <path d="M-18 13c-13 14-28 19-26 41s33 31 26 44" fill="none" stroke="#ae5d47" stroke-width="2"/>
+  </g>
+  <g class="crumb-rug" transform="translate(922 665) rotate(-4)"><use href="#crumb-drawing"/></g>
+  <g class="crumb-chair" transform="translate(1007 526) scale(.72)"><use href="#crumb-drawing"/></g>
+
+  <!-- Evening is a single intentional lighting state, not a looping effect. -->
+  <path class="scene-night-wash" d="M0 0h1200v790H0Z" fill="#243b42" opacity=".25" pointer-events="none"/>
+  <g class="lamp-glow" pointer-events="none">
+    <ellipse cx="690" cy="413" rx="198" ry="188" fill="url(#lamplight)"/>
+    <ellipse cx="688" cy="345" rx="69" ry="7" fill="#ffebb2" opacity=".9"/>
+  </g>
+</svg>

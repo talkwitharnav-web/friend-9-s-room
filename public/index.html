@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en" data-theme="day">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="description" content="An off-duty professor, a kettle, and nine little things. A small, imagined room for Friend 9.">
+  <title>Friend 9's room | Off the clock. On the kettle.</title>
+  <link rel="icon" href="/public/friend9s-room/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/public/friend9s-room/room.css">
+  <script src="/public/friend9s-room/room.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#room">Skip to the room</a>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="home-link" href="/" aria-label="Back to itsvibed">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 25V13l9-7 9 7v12H7Z"/><path d="M13 25v-9h6v9"/></svg>
+        <span>itsvibed<span class="breadcrumb"> / a small detour</span></span>
+      </a>
+      <div class="topbar-tools">
+        <button id="sound-toggle" class="quiet-button sound-control" type="button" data-interactive disabled aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path class="sound-waves" d="M15 8c2 2 2 6 0 8m3-11c4 4 4 10 0 14"/><path class="sound-slash" d="m16 9 5 6m0-6-5 6"/></svg>
+          <span id="sound-label">Sound off</span>
+        </button>
+        <details class="settings">
+          <summary class="quiet-button" aria-label="Room settings">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/></svg>
+            <span class="settings-word">Settings</span>
+          </summary>
+          <div class="settings-panel">
+            <strong>Make yourself comfortable.</strong>
+            <label class="checkbox-label"><input id="motion-toggle" type="checkbox" data-interactive disabled> Less movement</label>
+            <label class="checkbox-label"><input id="size-toggle" type="checkbox" data-interactive disabled> Larger text</label>
+            <label class="checkbox-label"><input id="contrast-toggle" type="checkbox" data-interactive disabled> More contrast</label>
+            <button id="reset-visit" class="text-button" type="button" data-interactive disabled>Start a fresh visit</button>
+            <p class="fine-print">Only this room's little discoveries and settings live in your browser.</p>
+          </div>
+        </details>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <div class="intro-copy">
+          <div class="eyebrow"><span class="tiny-star" aria-hidden="true">&#10035;</span> YOU FOUND THE SIDE DOOR</div>
+          <h1 id="page-title">Friend 9's <em>room.</em></h1>
+          <p class="intro-line">Off the clock. On the kettle.</p>
+          <p class="intro-description">Come in. Leave the impressive stuff at the door.<br class="desktop-break"> There's a comfortable chair and absolutely no agenda.</p>
+        </div>
+        <div class="door-tag" aria-hidden="true">
+          <span class="tag-hole"></span>
+          <span class="tag-number">09</span>
+          <span>probably<br>making tea</span>
+          <svg viewBox="0 0 56 22"><path d="M3 13c14 15 30-18 49-6M42 3l10 4-6 8"/></svg>
+        </div>
+      </section>
+
+      <section id="room" class="room-section" aria-labelledby="room-heading">
+        <div class="room-heading-row">
+          <div>
+            <h2 id="room-heading" class="section-label">A LITTLE LOOK AROUND</h2>
+            <p class="room-hint">Pick something that catches your eye.</p>
+          </div>
+          <button id="discovery-toggle" class="discovery-button" type="button" data-interactive disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.7 5.7L21 10l-4.5 4.6.9 6.4L12 18l-5.4 3 .9-6.4L3 10l6.3-1.3L12 3Z"/></svg>
+            <span><strong id="discovery-count">0 / 9</strong> <span class="discovery-word">little things</span></span>
+          </button>
+        </div>
+
+        <div class="room-layout">
+          <div class="room-frame">
+            <div class="room-toolbar">
+              <span class="room-caption"><span class="presence-dot" aria-hidden="true"></span> A perfectly unproductive afternoon</span>
+              <button id="lamp-toggle" class="scene-setting" type="button" data-interactive disabled aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 3-4 9h16l-4-9H8Zm4 9v9m-4 0h8"/></svg>
+                <span id="lamp-label">Evening, please</span>
+              </button>
+            </div>
+            <div class="scene">
+              <div class="artwork" role="img" aria-label="A cozy illustrated room. A bespectacled Friend 9 reads in a green armchair. A cat sleeps on the rug, two mugs wait on a wooden desk, and postcards, a radio, a basil plant and a mending basket fill the corners.">
+                <!-- ROOM_ILLUSTRATION -->
+              </div>
+              <div class="hotspots" aria-label="Nine objects in the room">
+                <button class="hotspot hotspot-window" type="button" data-object="window" data-interactive disabled aria-label="Explore the window">
+                  <span class="hotspot-dot" aria-hidden="true">1</span><span class="hotspot-name">The window</span><span class="sr-only found-label"></span>
+                </button>
+                <button class="hotspot hotspot-postcards" type="button" data-object="postcards" data-interactive disabled aria-label="Explore the postcards">
+                  <span class="hotspot-dot" aria-hidden="true">2</span><span class="hotspot-name">Postcards</span><span class="sr-only found-label"></span>
+                </button>
+                <button class="hotspot hotspot-plant" type="button" data-object="plant" data-interactive disabled aria-label="Explore the basil plant">
+                  <span class="hotspot-dot" aria-hidden="true">3</span><span class="hotspot-name">The basil</span><span class="sr-only found-label"></span>
+                </button>
+                <button class="hotspot hotspot-radio" type="button" data-object="radio" data-interactive disabled aria-label="Explore the radio">
+                  <span class="hotspot-dot" aria-hidden="true">4</span><span class="hotspot-name">Jo's radio</span><span class="sr-only found-label"></span>
+                </button>
+                <button class="hotspot hotspot-lamp" type="button" data-object="lamp" data-interactive disabled aria-label="Explore the lamp">
+                  <span class="hotspot-dot" aria-hidden="true">5</span><span class="hotspot-name">The little lamp</span><span class="sr-only found-label"></span>
+                </button>
+                <button class="hotspot hotspot-tea" type="button" data-object="tea" data-interactive disabled aria-label="Explore the tea tray">
+                  <span class="hotspot-dot" aria-hidden="true">6</span><span class="hotspot-name">Tea for two</span><span class="sr-only found-label"></span>
+                </button>
+                <button class="hotspot hotspot-book" type="button" data-object="book" data-interactive disabled aria-label="Explore the mystery book">
+                  <span class="hotspot-dot" aria-hidden="true">7</span><span class="hotspot-name">One more chapter</span><span class="sr-only found-label"></span>
+                </button>
+                <button class="hotspot hotspot-mending" type="button" data-object="mending" data-interactive disabled aria-label="Explore the mending basket">
+                  <span class="hotspot-dot" aria-hidden="true">8</span><span class="hotspot-name">A small repair</span><span class="sr-only found-label"></span>
+                </button>
+                <button class="hotspot hotspot-cat" type="button" data-object="cat" data-interactive disabled aria-label="Explore Crumb the cat">
+                  <span class="hotspot-dot" aria-hidden="true">9</span><span class="hotspot-name">Crumb</span><span class="sr-only found-label"></span>
+                </button>
+              </div>
+            </div>
+            <div class="scene-footer">
+              <span>Things here have stories. None of them are urgent.</span>
+              <span class="handwritten" aria-hidden="true">stay a little.</span>
+            </div>
+          </div>
+
+          <aside id="notebook" class="notebook" aria-labelledby="note-title">
+            <span class="paper-tape" aria-hidden="true"></span>
+            <div class="notebook-topline">
+              <span id="note-kicker" class="eyebrow">A NOTE FROM THE RESIDENT</span>
+              <span id="note-number" class="note-number" aria-hidden="true">f9</span>
+            </div>
+            <button id="back-to-room" class="text-button mobile-only" type="button" data-interactive disabled>Back to the room &#8593;</button>
+            <div id="note-doodle" class="note-doodle" aria-hidden="true">
+              <svg viewBox="0 0 120 96"><path d="M31 43h52v26c0 24-52 24-52 0V43Z"/><path d="M83 49h9c18 0 18 22 0 22H82M24 88h71M47 32c-12-9 10-14 0-23m17 23c-12-9 10-14 0-23"/><path class="doodle-fill" d="M31 43h52v26c0 24-52 24-52 0V43Z"/><path d="m52 61 5 5 11-12"/></svg>
+            </div>
+            <h2 id="note-title" tabindex="-1">Oh, hello.</h2>
+            <p id="note-body">I'm Friend 9. I teach things, fix things badly, and take the long way home on purpose.</p>
+            <p id="note-extra" class="note-extra">Today: a mystery novel, a radio I owe a friend, and this very ambitious plan to sit down.</p>
+            <div id="note-actions" class="note-actions"></div>
+            <p id="note-result" class="note-result"></p>
+            <div id="note-navigation" class="note-navigation" hidden>
+              <button id="previous-object" class="text-button" type="button" aria-label="Explore previous object">&#8592; Previous</button>
+              <button id="next-object" class="text-button" type="button" aria-label="Explore next object">Next little thing &#8594;</button>
+            </div>
+            <div class="resident-chat">
+              <div class="resident-name"><span class="resident-initial" aria-hidden="true">9</span><div><strong>Friend 9</strong><span>currently off duty</span></div></div>
+              <p id="resident-reply">"You don't have to be good at visiting. You're already doing it."</p>
+              <div class="conversation-prompts" aria-label="Ask Friend 9 something">
+                <button type="button" data-prompt="plans" data-interactive disabled>Any plans?</button>
+                <button type="button" data-prompt="joy" data-interactive disabled>A small good thing?</button>
+                <button type="button" data-prompt="advice" data-interactive disabled>A little advice?</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="afterthoughts" aria-label="A few things around the room">
+        <div class="fridge-note">
+          <span class="eyebrow">ON THE FRIDGE</span>
+          <h2>Not a to-do list.</h2>
+          <ul>
+            <li><span aria-hidden="true">&#10003;</span> Take the scenic way home.</li>
+            <li><span class="empty-box" aria-hidden="true"></span> Return Jo's radio. Eventually.</li>
+            <li><span aria-hidden="true">&#10003;</span> Keep the wonky mug.</li>
+          </ul>
+          <span class="pencil-note">Some things are better a little uneven.</span>
+        </div>
+        <div class="small-pleasures">
+          <span class="eyebrow">A LIFE OUTSIDE THE LECTURE</span>
+          <h2>Very serious about<br><em>unserious things.</em></h2>
+          <p>A good bakery. A bicycle with a squeaky pedal. The friend who remembers to call. A book with someone else's grocery list still inside.</p>
+          <p class="small-pleasures-footnote">Not everything needs to turn into something.</p>
+        </div>
+        <button id="envelope-button" class="envelope" type="button" data-interactive disabled aria-label="The Sunday envelope, find nine little things to open it">
+          <svg class="envelope-art" viewBox="0 0 200 135" aria-hidden="true"><rect x="9" y="17" width="182" height="109" rx="5"/><path d="m10 19 90 65 90-65M10 125l65-58m115 58-65-58"/><circle cx="100" cy="79" r="19"/><text x="100" y="86" text-anchor="middle">9</text></svg>
+          <strong>The Sunday envelope</strong>
+          <span id="envelope-hint">A little something, after nine little things.</span>
+        </button>
+      </section>
+      <noscript><p class="noscript-note">The room is yours to look around. Turn on JavaScript to make tea, meet Crumb, and open the little stories.</p></noscript>
+    </main>
+
+    <footer class="page-footer">
+      <span>A small, imagined room. Made with affection, not biographical accuracy.</span>
+      <span>Nothing to submit. No attendance taken.</span>
+    </footer>
+  </div>
+
+  <dialog id="discoveries-dialog" aria-labelledby="discoveries-title">
+    <div class="dialog-content">
+      <div class="dialog-heading"><span class="eyebrow">IF YOU COULD USE A NUDGE</span><button class="close-button" type="button" data-close="discoveries-dialog" aria-label="Close discoveries">&#215;</button></div>
+      <h2 id="discoveries-title">Nine little things.</h2>
+      <p>No right order. No need to turn the sound on. Just a little curiosity.</p>
+      <div id="discovery-list" class="discovery-list"></div>
+      <p class="fine-print">Tip: the <kbd>9</kbd> key will introduce you to Crumb.</p>
+    </div>
+  </dialog>
+
+  <dialog id="letter-dialog" aria-labelledby="letter-title">
+    <div class="dialog-content letter-content">
+      <div class="dialog-heading"><span class="eyebrow">THE SUNDAY ENVELOPE</span><button class="close-button" type="button" data-close="letter-dialog" aria-label="Close the letter">&#215;</button></div>
+      <span class="letter-stamp" aria-hidden="true">09<br><small>with love</small></span>
+      <h2 id="letter-title">Thanks for stopping by.</h2>
+      <p>You found the things. But mostly, you made a little room for someone.</p>
+      <p>Here's to the teachers who make room for questions, wrong turns, and the people we are still becoming.</p>
+      <p>And here's to them having good books, good friends, and a whole life after the last class.</p>
+      <p class="letter-signoff">Nothing left to find.<br>Nothing you need to do.<br><em>That was rather the point.</em></p>
+      <span class="letter-signature">a little thank-you, from the other side of the desk</span>
+      <button class="solid-button" type="button" data-close="letter-dialog">I'll stay for one more cup.</button>
+    </div>
+  </dialog>
+
+  <p id="room-status" class="room-status" role="status" aria-live="polite" aria-atomic="true"></p>
+  <p id="storage-notice" class="storage-notice" hidden></p>
+</body>
+</html>

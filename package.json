@@ -1,0 +1,16 @@
+{
+  "name": "friend-9-s-room",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A small, lived-in corner of itsvibed.com.",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check server.mjs && node --check public/room.js && node --check scripts/browser-check.mjs",
+    "test": "node --test",
+    "test:browser": "node scripts/browser-check.mjs"
+  },
+  "engines": {
+    "node": ">=22.18"
+  }
+}
