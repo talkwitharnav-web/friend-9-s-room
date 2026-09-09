@@ -16,7 +16,7 @@ current routing before using it for a future rollback.
 
 | Setting | Value |
 |---|---|
-| Serving-code revision, September 9, 2026 | `20292da5d3f4c7bbd0c008316618c74458e90906` |
+| Serving-code revision, September 9, 2026 | `3700f7fcd401f9d66836c705ef1566341a303d32` |
 | Service | `friend9-room.service` |
 | Listen address | `127.0.0.1:3009` |
 | Release directories | `/opt/friend9-room/releases/<full-commit-sha>` |
@@ -60,7 +60,16 @@ by weakening home permissions or running the tests as root.
 For later releases, stage another immutable commit directory, review the
 explicit selected-release change, and verify the new archive digest.
 Extract only into a new root-owned directory, change into it, and run the
-HTTP tests as `nobody` before publication. Confirm the managed service and
+Node tests as `nobody` before publication, including the pure state/lore
+tests as well as the HTTP contract. From inside the staged release:
+
+```bash
+sudo runuser -u nobody -- /usr/bin/node --test test/room-state.test.mjs test/room-content.test.mjs test/server.test.mjs
+```
+
+Playwright is development-only. The VM serves this application without
+`node_modules`; do not install browser tooling on the shared host.
+Confirm the managed service and
 the existing `current` symlink still identify the expected previous release.
 Publish a new symlink atomically, replacing only that owned pointer, then
 restart only this room's service. Retain every previous release directory

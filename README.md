@@ -14,6 +14,10 @@ postcards, basil, radio, lamp, tea tray, mystery book, mending basket, and cat.
 Their stories connect; making tea, repairing a sock, or changing the weather
 also changes the illustration and later conversation.
 
+The fictional neighborhood is Alder Quay. Jo supplies repairs, pottery and
+basil; Inez runs Backstep Bakery. A missed ferry, the bakery's ninth chair,
+and a missing cardigan button tie the room's memories together.
+
 Each story starts with a short glance. **One more thing** opens the deeper
 connection instead of putting the whole story on screen at once. Six extra
 scraps live in the bookshelf, biscuit tin, map, drawer, bicycle and door
