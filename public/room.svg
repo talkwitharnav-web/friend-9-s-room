@@ -362,7 +362,6 @@
   <ellipse cx="671" cy="679" rx="341" ry="75" fill="#c28d72" stroke="#a97e63" stroke-width="2"/>
   <ellipse cx="671" cy="679" rx="316" ry="60" fill="#dfb49a" stroke="#eacead" stroke-width="5"/>
   <ellipse cx="671" cy="679" rx="300" ry="51" fill="url(#rug-lines)"/>
-  <path d="M623 650c-13 17 11 43 44 44 28 1 58-22 47-39" fill="none" stroke="#bd8d6f" stroke-width="2"/>
   </g>
 
   <!-- A real sit-down sort of chair. -->

@@ -75,9 +75,9 @@ const stories = {
     title: "A Questionable Alibi",
     glance: state.plans.mug
       ? "The detective has overlooked a bicycle. My three pencil objections can stay in the drawer while we have tea."
-      : "The detective has overlooked a bicycle. My pencil objections now have a crooked pencil holder.",
+      : "The detective has overlooked a bicycle. The pencils live in Jo's mug; my three objections are in the drawer.",
     detail: "Inez reads endings first. Jo remembers every suspect except the guilty one. We eat buns and disagree about what happened. My old ferry ticket is the bookmark.",
-    related: "tea", link: "Meet the book club's cups",
+    related: "drawer", link: "Read the three objections",
   }),
   mending: (state) => ({
     title: "The Ferry-Day Socks",
@@ -130,10 +130,8 @@ const scraps = {
   drawer: {
     title: "Not Electrical",
     body: '"Found your red cardigan button behind the radio handle. Removed button. Radio fixed. Cardigan still your problem." Jo.',
-    related: "mending", link: "Reunite the thread and its job",
-    reaction: (state) => state.plans.radio
-      ? "The matching red button is here, beside the note. Jo's radio has its pickup tag, but is still on the desk."
-      : "The matching red button is here, beside the note. Crumb's alibi held. The radio can stay for another song.",
+    related: "mending", link: "See where the red thread went",
+    reaction: (state) => `The red button is beside Jo's note. Underneath, my three book-club objections: "The bicycle was outside all along." "Nobody checked the basket." "A bell is a terrible alibi." ${state.plans.radio ? "The radio's pickup tag is ready." : "The radio can stay for another song."}`,
   },
   bicycle: {
     title: "Cargo Manifest",
@@ -236,7 +234,7 @@ export function residentLine(prompt, state, turn = 0) {
 
 export function getLetter(state) {
   return {
-    story: "Thanks for coming over. A missed ferry turned into a repaired chair, a nickname, and two friends I now see whenever I can.",
+    story: "A missed ferry turned into a repaired chair, a nickname, and two friends I now see whenever I can.",
     plans: `I've penciled in ${state.plans.scenic ? "the towpath" : "the square"}. Jo's radio ${state.plans.radio ? "has its packing tag ready" : "is staying here"}, and the crooked mug ${state.plans.mug ? "gets the tea" : "keeps the pencils"}. I'll see Inez either way. I liked fixing her chair. I like knowing her better.`,
   };
 }

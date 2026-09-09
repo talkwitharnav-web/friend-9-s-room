@@ -31,7 +31,7 @@ function restoreState() {
     raw = localStorage.getItem(STORAGE_KEY);
   } catch (error) {
     if (!expectedStorageError(error)) throw error;
-    storageNotice("Make yourself at home. This browser can't keep your discoveries after you leave.", error);
+    storageNotice("Your choices work for this visit, but this browser won't remember new ones after a reload.", error);
     return initialState();
   }
   const result = readStoredState(raw, prefersEvening());
@@ -53,6 +53,7 @@ let audioMaster = null;
 let audioTimer;
 let audioBusy = false;
 let soundWanted = false;
+let audioPausedAway = false;
 const activeNotes = new Set();
 const sceneObjects = new Map(Object.entries({
   window: "window", "curtains-left": "window", "curtains-right": "window", "curtain-rod": "window",
@@ -91,7 +92,7 @@ function persistState() {
     byId("storage-notice").hidden = true;
   } catch (error) {
     if (!expectedStorageError(error)) throw error;
-    storageNotice("Your room still works. This browser couldn't save the latest discoveries.", error);
+    storageNotice("Keep exploring. This browser couldn't save your new choices, so they won't be remembered after a reload.", error);
   }
 }
 
@@ -109,9 +110,9 @@ function discover(id) {
   return state.seen.length === 9;
 }
 
-function changeState(changes, message) {
+function changeState(changes, message, { showInStory = true } = {}) {
   Object.assign(state, changes);
-  noteResult = message;
+  noteResult = showInStory ? message : "";
   persistState();
   render();
   announce(message);
@@ -335,8 +336,9 @@ function render() {
     : `The Sunday envelope. ${9 - state.seen.length} little things left to discover.`);
   byId("envelope-hint").textContent = complete
     ? "It's yours now. Go on, open it."
-    : "A little something, after nine little things.";
+    : "See what's left to explore.";
   renderNotebook();
+  byId("resident-reply").hidden = selectedObject !== null && activePrompt === null;
   if (activePrompt) renderResidentReply();
   if (byId("scraps-dialog").open) renderScrap();
   if (byId("letter-dialog").open) renderLetter();
@@ -384,6 +386,11 @@ function followStory(destination) {
 
 function renderScrap() {
   const scrap = getScrap(selectedScrap, state);
+  const locations = {
+    shelf: "ON THE BOOKSHELF", tin: "IN THE BISCUIT TIN", map: "ON THE FOLDED MAP",
+    drawer: "IN THE DRAWER", bicycle: "IN THE BICYCLE BASKET", nine: "THE OLD TEA ORDER",
+  };
+  byId("scrap-kicker").textContent = locations[selectedScrap];
   byId("scrap-title").textContent = scrap.title;
   byId("scrap-body").textContent = scrap.body;
   byId("scrap-reaction").textContent = scrap.reaction;
@@ -465,6 +472,7 @@ for (const button of document.querySelectorAll("[data-close]")) {
 
 function renderResidentReply() {
   const reply = residentLine(activePrompt, state, conversationTurn);
+  byId("resident-reply").hidden = false;
   byId("resident-reply").textContent = `"${reply}"`;
   for (const button of document.querySelectorAll("[data-prompt]")) {
     button.setAttribute("aria-pressed", String(button.dataset.prompt === activePrompt));
@@ -516,12 +524,13 @@ function scheduleMelody() {
 function syncSoundControls() {
   const playing = soundWanted && audioContext?.state === "running";
   root.dataset.sound = playing ? "on" : "off";
-  const label = audioBusy ? "One moment..." : playing ? "Sound on" : "Sound off";
+  const label = audioBusy ? "One moment..." : playing ? "Pause radio" : "Play radio";
   byId("sound-label").textContent = label;
   byId("sound-toggle").setAttribute("aria-pressed", String(playing));
   byId("sound-toggle").disabled = audioBusy;
+  byId("radio-status").hidden = selectedObject !== "radio" || !audioPausedAway;
   for (const button of document.querySelectorAll("[data-sound-control]")) {
-    button.querySelector(".button-label").textContent = audioBusy ? "One moment..." : playing ? "Pause the radio" : "Play the radio";
+    button.querySelector(".button-label").textContent = label;
     button.disabled = audioBusy;
     button.setAttribute("aria-pressed", String(playing));
   }
@@ -553,7 +562,13 @@ async function closeSound() {
   if (previous && previous.state !== "closed") await previous.close();
 }
 
-async function setSound(enabled) {
+async function setSound(enabled, reason = "manual") {
+  const hadSound = soundWanted || audioContext !== null;
+  if (reason === "away") {
+    if (hadSound) audioPausedAway = true;
+  } else {
+    audioPausedAway = false;
+  }
   soundWanted = enabled && !document.hidden;
   if (audioBusy) return; // Hidden-tab cancellation is consumed after resume below.
   audioBusy = true;
@@ -561,6 +576,8 @@ async function setSound(enabled) {
   try {
     if (!soundWanted) {
       await closeSound();
+      if (reason === "away" && hadSound) announce("Radio paused while you were away. Play radio to start again.");
+      else if (reason === "manual" && hadSound) announce("The radio is paused.");
     } else if (!audioContext) {
       const AudioContextClass = window.AudioContext ?? window.webkitAudioContext;
       if (!AudioContextClass) {
@@ -573,6 +590,7 @@ async function setSound(enabled) {
       await audioContext.resume();
       if (!soundWanted || document.hidden) {
         await closeSound();
+        if (audioPausedAway) announce("Radio paused while you were away. Play radio to start again.");
       } else {
         audioMaster = audioContext.createGain();
         audioMaster.gain.value = 0.16;
@@ -621,7 +639,7 @@ for (const input of document.querySelectorAll("[data-plan]")) {
     activePrompt = `plan:${id}`;
     conversationTurn = 0;
     changeState({ plans: { ...state.plans, [id]: input.checked } },
-      planReaction(id, { ...state, plans: { ...state.plans, [id]: input.checked } }));
+      planReaction(id, { ...state, plans: { ...state.plans, [id]: input.checked } }), { showInStory: false });
   });
 }
 byId("story-link").addEventListener("click", (event) => followStory(event.currentTarget.dataset.destination));
@@ -661,17 +679,20 @@ byId("envelope-button").addEventListener("click", () => {
 byId("lamp-toggle").addEventListener("click", () => {
   discover("lamp");
   changeState({ theme: state.theme === "day" ? "evening" : "day" },
-    state.theme === "day" ? "Small lamp. Softer plans." : "There's still a little afternoon left.");
+    state.theme === "day" ? "Small lamp. Softer plans." : "There's still a little afternoon left.", { showInStory: false });
 });
 byId("sound-toggle").addEventListener("click", () => { void setSound(!soundWanted); });
 byId("motion-toggle").addEventListener("change", (event) => changeState(
   { reducedMotion: event.target.checked }, event.target.checked ? "The room will keep still." : "A little movement is back.",
+  { showInStory: false },
 ));
 byId("size-toggle").addEventListener("change", (event) => changeState(
   { largeText: event.target.checked }, event.target.checked ? "A little easier on the eyes." : "Back to the usual text size.",
+  { showInStory: false },
 ));
 byId("contrast-toggle").addEventListener("change", (event) => changeState(
   { contrast: event.target.checked }, event.target.checked ? "A little more definition." : "Back to the softer outlines.",
+  { showInStory: false },
 ));
 byId("reset-visit").addEventListener("click", () => {
   openDialog(byId("reset-dialog"));
@@ -699,14 +720,14 @@ byId("confirm-reset").addEventListener("click", () => {
   byId("note-navigation").hidden = true;
   persistState();
   render();
-  void setSound(false);
+  void setSound(false, "reset");
   announce("A fresh visit. Your reading preferences stayed put.");
 });
 motionPreference.addEventListener("change", render);
 document.addEventListener("visibilitychange", () => {
-  if (document.hidden) void setSound(false);
+  if (document.hidden) void setSound(false, "away");
 });
-window.addEventListener("pagehide", () => { void setSound(false); });
+window.addEventListener("pagehide", () => { void setSound(false, "leaving"); });
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     const settings = document.querySelector(".settings");
@@ -728,4 +749,5 @@ document.addEventListener("pointerdown", (event) => {
   }
 });
 render();
+byId("interaction-notice").hidden = true;
 root.dataset.ready = "true";

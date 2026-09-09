@@ -18,6 +18,9 @@ Each story starts with a short glance. **One more thing** opens the deeper
 connection instead of putting the whole story on screen at once. Six extra
 scraps live in the bookshelf, biscuit tin, map, drawer, bicycle and door
 number. They are optional; they do not add another completion counter.
+The book's pencil objections lead directly into the drawer and are actually
+there beside Jo's repair note. The introductory companion aside is shown
+once; conversation stays available without repeating it after every story.
 
 The fridge is an interactive set of afternoon choices, not a pretend task
 manager. Check or uncheck the scenic route, packing Jo's radio, and using the
@@ -30,6 +33,9 @@ Find nine distinct objects to open the Sunday envelope. Sound is optional
 and never required to finish. The radio has three original procedural tunes,
 starts only on request, and stops when its tab is hidden. There are no timers,
 scores, deadlines, or penalties. The `9` key introduces Crumb.
+Header and notebook use the same Play/Pause radio action. Returning to a
+paused radio explains what happened without restarting sound. The sealed
+envelope can show what remains to discover before it can be opened.
 
 Reading size, contrast, and reduced motion are independent settings. The
 device's reduced-motion preference is always respected. On small screens,
@@ -39,6 +45,9 @@ Its version-two payload preserves old version-one discoveries and reading
 preferences. Starting a fresh visit asks before clearing this room's state
 and retains reading settings and theme. Text is deliberately non-selectable
 throughout this illustrated page; native controls remain keyboard-accessible.
+If JavaScript is unavailable, an accessible explanation precedes the room
+controls. A storage failure explains that new choices will not survive a
+reload rather than merely reporting a technical saving problem.
 
 The artwork itself accepts the same actions as the visible buttons. SVG
 geometry IDs are therefore interaction anchors, not arbitrary labels. Keep

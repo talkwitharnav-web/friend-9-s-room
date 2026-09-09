@@ -228,6 +228,7 @@ try {
     await shot("pinned", "#notebook");
     await action(page, "pin");
     await note("A second click unpins", (await getState(page)).pinnedPostcard === null);
+    await shot("unpinned", "#notebook");
     await action(page, "turn");
     await action(page, "pin");
     await action(page, "turn");
@@ -244,15 +245,18 @@ try {
       await select(page, object);
       await action(page, control);
       await note(`${object}: first click changes the object`, (await getState(page))[key] === true);
+      await shot(`${object}-on`, "#notebook");
       await action(page, control);
       await note(`${object}: second click reverses it`, (await getState(page))[key] === false);
       await note(`${object}: focus stays on the same control`, await page.locator(`[data-action="${control}"]`).evaluate((element) => document.activeElement === element));
+      await shot(`${object}-off`, "#notebook");
     }
     await select(page, "plant");
     await action(page, "water");
     await note("Watering visibly perks up the basil and prevents repeated watering",
       await page.locator('[data-action="water"]').isDisabled() &&
       await page.locator(".plant-happy").isVisible() && await page.locator(".plant-droopy").isHidden());
+    await shot("watered", "#notebook");
     await select(page, "cat");
     await action(page, "chair");
     const marker = await page.locator('.hotspot-cat').boundingBox();
@@ -315,6 +319,14 @@ try {
       });
       if (["window", "radio", "book"].includes(id)) await shot(id, "#notebook");
     }
+    await select(page, "book");
+    await page.locator("#note-more summary").click();
+    await page.locator("#story-link").click();
+    await note("The book's promised objections are delivered in the drawer",
+      await page.locator("#scrap-title").innerText() === "Not Electrical" &&
+      (await page.locator("#scrap-reaction").innerText()).includes("three book-club objections"));
+    await shot("book-payoff", "#scraps-dialog");
+    await page.keyboard.press("Escape");
     await page.locator('[data-scrap="shelf"]').click();
     record.scraps = [];
     for (const id of SCRAP_IDS) {
@@ -337,9 +349,13 @@ try {
     await page.keyboard.press("Tab");
     await note("Keyboard visitors get the skip link first", await page.locator(".skip-link").evaluate((element) => document.activeElement === element));
     await page.keyboard.press("Enter");
+    await note("The skip link moves focus to the room", await page.locator("#room").evaluate((element) => document.activeElement === element));
     await page.locator("#discovery-toggle").focus();
     await page.keyboard.press("Enter");
     await note("Enter opens the native discovery dialog", await page.locator("#discoveries-dialog").isVisible());
+    await note("The open discovery dialog exposes its heading as its accessible name",
+      await page.getByRole("dialog", { name: "Nine little things." }).count() === 1);
+    record.openDialogTree = await page.locator("#discoveries-dialog").ariaSnapshot();
     record.focus = [];
     for (let index = 0; index < 13; index++) {
       await page.keyboard.press("Tab");
@@ -357,8 +373,11 @@ try {
     await page.locator(".settings summary").focus();
     await page.keyboard.press("Enter");
     await note("Enter opens settings", await page.locator(".settings").evaluate((element) => element.open));
+    record.openSettingsTree = await page.locator(".settings").ariaSnapshot();
+    await shot("settings", ".settings-panel");
     await page.keyboard.press("Escape");
     await note("Escape closes the settings disclosure", await page.locator(".settings").evaluate((element) => !element.open));
+    await note("Settings Escape returns focus to its summary", await page.locator(".settings summary").evaluate((element) => document.activeElement === element));
     await page.locator('[data-plan="scenic"]').focus();
     const before = await page.locator('[data-plan="scenic"]').isChecked();
     await page.keyboard.press("Space");
@@ -385,6 +404,9 @@ try {
       await page.setViewportSize({ width: 320, height: 740 });
       record.small = await noOverflow(page);
       await shot("320px");
+      await note("The enlarged story heading has the full notebook width", await page.locator(".note-doodle").evaluate((element) => getComputedStyle(element).float === "none"));
+      const nav = await page.locator(".note-navigation").evaluate((element) => getComputedStyle(element).flexDirection);
+      await note("Narrow story navigation stacks without orphan arrows", nav === "column");
       const contrast = await page.evaluate(() => {
         const luminance = (value) => {
           const components = value.match(/[\d.]+/g).slice(0, 3).map(Number).map((c) => {
@@ -447,6 +469,9 @@ try {
     await page.bringToFront();
     await page.waitForFunction(() => !document.hidden, null, { polling: 100, timeout });
     await note("Returning does not autoplay", await page.locator("html").getAttribute("data-sound") === "off");
+    await note("Returning explains the passive stop", await page.locator("#radio-status").isVisible() &&
+      (await page.locator("#radio-status").innerText()).includes("Paused while"));
+    await shot("returned", "#notebook");
     await other.close();
     await action(page, "sound");
     await page.waitForFunction(() => document.documentElement.dataset.sound === "on");
@@ -454,6 +479,8 @@ try {
     await page.waitForFunction(() => document.documentElement.dataset.sound === "off");
     await note("Both play/pause controls stay in sync", await page.locator("#sound-toggle").getAttribute("aria-pressed") === "false" &&
       await page.locator('[data-action="sound"]').getAttribute("aria-pressed") === "false");
+    await note("Header and notebook name the same action", await page.locator("#sound-label").innerText() ===
+      await page.locator('[data-action="sound"] .button-label').innerText());
     record.frequencies = await page.evaluate(() => window.__frequencies);
   }, { nativeVisibility: true });
 
@@ -476,6 +503,8 @@ try {
       await action(page, "mint");
       await note("Blocked storage leaves interactions usable", await page.locator("html").getAttribute("data-tea") === "mint");
       await note("Storage failure is visible", await page.locator("#storage-notice").isVisible());
+      await note("Storage failure explains the reload consequence",
+        (await page.locator("#storage-notice").innerText()).includes("after a reload"));
       await shot("storage");
     }, { seed: (() => {
       const state = freshState(true);
@@ -490,6 +519,7 @@ try {
   await run("10-finishing-the-visit", {}, async ({ page, note, shot, record }) => {
     await page.locator("#envelope-button").click();
     await note("An unopened envelope offers the missing discoveries", await page.locator("#discoveries-dialog").isVisible());
+    await note("The sealed envelope advertises its useful action", await page.locator("#envelope-hint").innerText() === "See what's left to explore.");
     await page.keyboard.press("Escape");
     for (const id of OBJECT_IDS) await select(page, id);
     await note("Nine unique discoveries unlock the envelope", await page.locator("#envelope-button").getAttribute("aria-label") === "Open the Sunday envelope");
@@ -512,10 +542,16 @@ try {
   });
 
   await run("09b-no-javascript", { javaScriptEnabled: false, viewport: { width: 390, height: 844 } },
-    async ({ page, note, shot }) => {
+    async ({ page, note, shot, record }) => {
       await note("The whole room illustration remains visible without JavaScript", await page.locator(".room-illustration").isVisible());
       await note("Interactive controls are honestly disabled", await page.locator("[data-interactive]").evaluateAll((elements) => elements.every((element) => element.disabled)));
-      await note("The no-JavaScript explanation is visible", await page.locator(".noscript-note").isVisible());
+      await note("The no-JavaScript explanation is visible", await page.locator("#interaction-notice").isVisible());
+      const explanation = await page.locator("#interaction-notice").boundingBox();
+      const control = await page.locator("#discovery-toggle").boundingBox();
+      await note("The explanation precedes the room controls", explanation.y + explanation.height <= control.y);
+      record.fallbackAccessibility = await page.locator("body").ariaSnapshot();
+      await note("The fallback explanation is exposed to assistive readers",
+        record.fallbackAccessibility.includes("Stories and controls need JavaScript"));
       await shot("room");
     }, { scripts: false });
 } finally {
