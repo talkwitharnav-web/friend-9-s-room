@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { createServer } from "node:http";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 
 export const ROOM_PATH = "/public/friend9s-room";
 const PUBLIC_DIRECTORY = new URL("./public/", import.meta.url);
@@ -176,8 +176,7 @@ export function createRoomServer() {
   return server;
 }
 
-const invokedFile = process.argv[1] && pathToFileURL(process.argv[1]).href;
-if (import.meta.url === invokedFile) {
+if (import.meta.main) {
   const port = Number(process.env.PORT ?? 3009);
   if (!Number.isInteger(port) || port < 1 || port > 65535) {
     throw new Error("PORT must be an integer between 1 and 65535.");
