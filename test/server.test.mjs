@@ -64,7 +64,7 @@ test("short links redirect temporarily to the exact canonical room", async () =>
     const response = await visit(path);
     assert.equal(response.status, 302, path);
     assert.equal(response.headers.location, ROOM_PATH);
-    assert.equal(response.headers["cache-control"], "no-store");
+    assert.equal(response.headers["cache-control"], "no-store, no-transform");
   }
   const response = await fetch(`${origin}/friend9s-room`);
   assert.equal(response.url, `${origin}${ROOM_PATH}`);
@@ -159,8 +159,8 @@ test("assets revalidate and the canonical document is never stored", async () =>
   });
   assert.equal(cached.status, 304);
   assert.equal(cached.body, "");
-  assert.equal(asset.headers["cache-control"], "public, max-age=0, must-revalidate");
-  assert.equal((await visit(ROOM_PATH)).headers["cache-control"], "no-store");
+  assert.equal(asset.headers["cache-control"], "public, max-age=0, must-revalidate, no-transform");
+  assert.equal((await visit(ROOM_PATH)).headers["cache-control"], "no-store, no-transform");
 });
 
 test("methods and even GET bodies are refused without changing any state", async () => {
@@ -188,6 +188,7 @@ test("every application response has strict browser protections and no cookies",
     assert.equal(response.headers["set-cookie"], undefined);
     assert.equal(response.headers["access-control-allow-origin"], undefined);
     assert.doesNotMatch(response.headers["content-security-policy"], /unsafe-inline|unsafe-eval/);
+    assert.match(response.headers["cache-control"], /no-transform/);
   }
 });
 

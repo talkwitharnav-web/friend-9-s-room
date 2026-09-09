@@ -88,7 +88,8 @@ export function createRoomServer() {
       for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
         response.setHeader(name, value);
       }
-      response.setHeader("Cache-Control", "no-store");
+      // Keep the edge from injecting analytics or inline detection scripts.
+      response.setHeader("Cache-Control", "no-store, no-transform");
 
       const send = (status, content, contentType = "text/plain; charset=utf-8") => {
         response.writeHead(status, {
@@ -153,7 +154,7 @@ export function createRoomServer() {
 
       // Revalidate assets across releases; HTML and redirects are never cached.
       if (pathname !== ROOM_PATH) {
-        response.setHeader("Cache-Control", "public, max-age=0, must-revalidate");
+        response.setHeader("Cache-Control", "public, max-age=0, must-revalidate, no-transform");
       }
       response.setHeader("ETag", asset.etag);
       if (request.headers["if-none-match"] === asset.etag) {

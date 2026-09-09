@@ -102,6 +102,16 @@ The room shares an origin with existing itsvibed apps. A URL path is not a
 browser security boundary. Keep this app free of user-supplied HTML, scripts,
 third-party widgets, authentication, and sensitive storage.
 
+Responses use `Cache-Control: no-transform`. Without it, the shared
+Cloudflare zone adds an analytics beacon and inline JavaScript Detections
+code, both correctly refused by this page's CSP. Cloudflare documents that
+`no-transform` prevents both injections: [Web Analytics FAQ](https://developers.cloudflare.com/web-analytics/faq/)
+and [JavaScript Detections](https://developers.cloudflare.com/cloudflare-challenges/challenge-types/javascript-detections/).
+This keeps the room's delivered code intact without allowing inline scripts
+or third-party tracking. It changes no zone-wide firewall settings; the
+room has no account or write endpoint depending on a JavaScript Detections
+signal. Other apps keep their own response policies.
+
 The VM service has a dynamic unprivileged identity, read-only filesystem,
 no home-directory access, no capabilities, and memory/CPU/process limits.
 It cannot read the other apps' private files or take over their ports.
