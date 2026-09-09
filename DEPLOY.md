@@ -32,12 +32,21 @@ locally, transfer it over SSH to
 sudo bash /home/itsvibed/friend9-install-first-release.sh COMMIT_SHA ARCHIVE_SHA256
 ```
 
+Export the installer from that same Git commit, not a Windows working copy
+with CRLF line endings. A Git ZIP export plus `Expand-Archive` preserves its
+committed LF bytes when transferring the script separately.
+
 This is deliberately a **first-install-only** script. It refuses an existing
 release, service, selected-release link, or occupied port. It verifies the
 archive digest, runs the HTTP tests as an unprivileged user, validates the
 unit, and enables only `friend9-room.service`. It deletes no files and changes
 no tunnel rules. A failure leaves artifacts available for inspection rather
 than attempting a broad cleanup or stopping an unknown process.
+
+The installer changes into the readable release directory before running the
+unprivileged tests. Starting Node's test subprocesses from the operator's
+private home instead fails with `spawn /usr/bin/node EACCES`; do not fix that
+by weakening home permissions or running the tests as root.
 
 For later releases, stage another immutable commit directory, review the
 explicit selected-release change, then restart only this room's service.

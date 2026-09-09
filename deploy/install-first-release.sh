@@ -30,6 +30,7 @@ printf '%s  %s\n' "$checksum" "$archive" | sha256sum --check --status
 
 install -d -m 0755 /opt/friend9-room /opt/friend9-room/releases "$release"
 tar --extract --file "$archive" --directory "$release" --no-same-owner --no-same-permissions
+cd "$release"
 /usr/bin/node --check "$release/server.mjs"
 /usr/bin/node --check "$release/public/room.js"
 runuser -u nobody -- /usr/bin/node --test "$release/test/server.test.mjs"
