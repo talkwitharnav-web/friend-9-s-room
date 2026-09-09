@@ -6,8 +6,17 @@ Do not modify the Router's visible page; this is an unlisted Easter egg.
 
 ## Installation
 
+The room's system service and both hostname rules were installed on
+**2026-09-09**. The Router's visible page is unchanged. The temporary
+`friend9-route-replica-20260909.service` was retired after the persistent
+connector registered and both hosts served the room and its exact assets.
+The private pre-room tunnel backup is retained at
+`/etc/cloudflared/config.pre-friend9-20260909.yml`; inspect its contents and
+current routing before using it for a future rollback.
+
 | Setting | Value |
 |---|---|
+| Serving-code revision, September 9, 2026 | `20292da5d3f4c7bbd0c008316618c74458e90906` |
 | Service | `friend9-room.service` |
 | Listen address | `127.0.0.1:3009` |
 | Release directories | `/opt/friend9-room/releases/<full-commit-sha>` |
@@ -49,9 +58,26 @@ private home instead fails with `spawn /usr/bin/node EACCES`; do not fix that
 by weakening home permissions or running the tests as root.
 
 For later releases, stage another immutable commit directory, review the
-explicit selected-release change, then restart only this room's service.
-Retain previous release directories. Never overwrite files inside a serving
-release or repurpose the first-install script to clobber an existing install.
+explicit selected-release change, and verify the new archive digest.
+Extract only into a new root-owned directory, change into it, and run the
+HTTP tests as `nobody` before publication. Confirm the managed service and
+the existing `current` symlink still identify the expected previous release.
+Publish a new symlink atomically, replacing only that owned pointer, then
+restart only this room's service. Retain every previous release directory
+and all of its files. Never overwrite files inside a serving release or
+repurpose the first-install script to clobber an existing install.
+
+The selected pointer and the actual running process must agree:
+
+```bash
+readlink -f /opt/friend9-room/current
+systemctl show friend9-room.service -p MainPID -p WorkingDirectory -p ActiveState
+sudo readlink /proc/MAIN_PID/cwd
+curl --fail http://127.0.0.1:3009/health
+```
+
+Use the freshly reported PID, never one copied from old notes. A source-only
+documentation commit does not need another service restart.
 
 ## Exact route ownership
 
