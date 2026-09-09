@@ -67,12 +67,14 @@ async function noOverflow(page) {
 async function screenshotRegion(page, name, region) {
   const rect = await page.locator(".room-illustration").boundingBox();
   assert.ok(rect);
+  const scroll = await page.evaluate(() => ({ x: scrollX, y: scrollY }));
   const scale = rect.width / 1200;
   await page.screenshot({
     path: path.join(artifactDirectory, `${name}.png`),
+    fullPage: true,
     clip: {
-      x: rect.x + region[0] * scale,
-      y: rect.y + region[1] * scale,
+      x: rect.x + scroll.x + region[0] * scale,
+      y: rect.y + scroll.y + region[1] * scale,
       width: region[2] * scale,
       height: region[3] * scale,
     },
@@ -132,21 +134,62 @@ async function run(name, options, callback, { scripts = true, seed, nativeVisibi
 }
 
 try {
-  await run("01-first-look", {}, async ({ page, note, shot, record }) => {
+  await run("01-first-look", { deviceScaleFactor: 2 }, async ({ page, note, shot, record }) => {
     await note("Both unwanted phrases are removed", !/Nothing to submit|No attendance taken|Things here have stories|None of them are urgent/.test(await page.locator("body").innerText()));
     await note("Nine primary discoveries remain", await page.locator("[data-object]").count() === 9);
     await note("Every primary target is reachable and the layout fits", await noOverflow(page));
     await note("No sound starts on arrival", await page.locator("html").getAttribute("data-sound") === "off");
     await shot("desktop");
     await shot("room", ".artwork");
+    record.geometry = await page.evaluate(() => {
+      const svg = document.querySelector(".room-illustration");
+      const world = (selector) => {
+        const element = document.querySelector(selector);
+        const box = element.getBBox();
+        const transform = svg.getScreenCTM().inverse().multiply(element.getScreenCTM());
+        const points = [[box.x, box.y], [box.x + box.width, box.y + box.height]]
+          .map(([x, y]) => new DOMPoint(x, y).matrixTransform(transform));
+        return {
+          left: Math.min(...points.map((point) => point.x)),
+          right: Math.max(...points.map((point) => point.x)),
+          top: Math.min(...points.map((point) => point.y)),
+          bottom: Math.max(...points.map((point) => point.y)),
+        };
+      };
+      return {
+        sill: world("#window-sill"), saucer: world("#basil-saucer"),
+        shelf: world("#bookshelf"), window: world("#window"), table: world("#table-top"),
+        drawer: world("#table-drawer"), apron: world("#table-front-apron"),
+        curtains: ["#curtains-left", "#curtains-right"].map(world),
+        legs: ["#table-leg-back-left", "#table-leg-back-right", "#table-leg-front-left", "#table-leg-front-right"].map(world),
+        wheels: document.querySelectorAll("#bicycle-wheels > circle").length,
+      };
+    });
+    const geometry = record.geometry;
+    await note("The basil saucer physically touches the top of the sill", Math.abs(geometry.saucer.bottom - geometry.sill.top) < 0.5);
+    await note("Both curtains have full hanging fabric", geometry.curtains.length === 2 && geometry.curtains.every((rect) => rect.bottom - rect.top > 280));
+    await note("The foreground bookshelf overlaps the lower window without hitting the desk",
+      geometry.shelf.top < geometry.window.bottom && geometry.shelf.right < geometry.table.left);
+    await note("Four distinct full-height desk legs exist", geometry.legs.length === 4 &&
+      geometry.legs.every((leg) => leg.bottom - leg.top > 115) &&
+      new Set(geometry.legs.map((leg) => Math.round(leg.left))).size === 4);
+    await note("The drawer fits completely inside the desk apron", geometry.drawer.left >= geometry.apron.left &&
+      geometry.drawer.right <= geometry.apron.right && geometry.drawer.top >= geometry.apron.top &&
+      geometry.drawer.bottom <= geometry.apron.bottom);
     await page.locator(".artwork").scrollIntoViewIfNeeded();
     for (const [label, region] of Object.entries({
-      window: [0, 20, 460, 470], desk: [310, 420, 525, 305],
-      cat: [825, 505, 270, 210], bicycle: [1050, 270, 150, 390],
+      window: [0, 20, 500, 470], desk: [310, 420, 545, 315],
+      cat: [800, 495, 300, 270], bicycle: [1050, 430, 150, 220],
     })) {
       await screenshotRegion(page, `01-first-look-${label}`, region);
       record.screenshots.push(`01-first-look-${label}.png`);
     }
+    await page.locator("#basil-pot").click();
+    await note("The illustrated pot itself opens its story, not only the number", await page.locator('[data-object="plant"]').getAttribute("aria-pressed") === "true");
+    await page.locator("#table-drawer").click();
+    await note("The actual illustrated drawer opens its lore", await page.locator("#scraps-dialog").isVisible() &&
+      await page.locator("#scrap-title").innerText() === "Not Electrical");
+    await page.keyboard.press("Escape");
     const text = page.locator("#note-body");
     await text.scrollIntoViewIfNeeded();
     const box = await text.boundingBox();
@@ -205,8 +248,18 @@ try {
       await note(`${object}: second click reverses it`, (await getState(page))[key] === false);
       await note(`${object}: focus stays on the same control`, await page.locator(`[data-action="${control}"]`).evaluate((element) => document.activeElement === element));
     }
+    await select(page, "plant");
+    await action(page, "water");
+    await note("Watering visibly perks up the basil and prevents repeated watering",
+      await page.locator('[data-action="water"]').isDisabled() &&
+      await page.locator(".plant-happy").isVisible() && await page.locator(".plant-droopy").isHidden());
     await select(page, "cat");
     await action(page, "chair");
+    const marker = await page.locator('.hotspot-cat').boundingBox();
+    const picture = await page.locator("#cat-on-chair").boundingBox();
+    await note("Crumb's marker follows the cat onto the chair", marker.x + marker.width / 2 >= picture.x &&
+      marker.x + marker.width / 2 <= picture.x + picture.width &&
+      marker.y + marker.height / 2 >= picture.y && marker.y + marker.height / 2 <= picture.y + picture.height);
     await shot("chair-cat", ".artwork");
     await action(page, "chair");
     await note("Crumb returns to the rug", (await getState(page)).cat === "rug");
@@ -222,6 +275,13 @@ try {
       await page.locator(`[data-plan="${id}"]`).setChecked(!(await getState(page)).plans[id]);
       const changed = await page.locator("#note-body").innerText();
       await note(`${id}: choice changes the connected story`, original !== changed);
+      const visible = await page.evaluate((plan) => {
+        const showing = (selector) => getComputedStyle(document.querySelector(selector)).display !== "none";
+        if (plan === "scenic") return showing(".route-direct") && !showing(".route-scenic");
+        if (plan === "radio") return showing(".radio-packed") && showing("#radio");
+        return showing(".mug-plain") && showing(".mug-shelf") && !showing(".mug-kept");
+      }, id);
+      await note(`${id}: the matching illustrated preparation changes`, visible);
       await shot(`${id}-changed`, ".room-frame");
       record.branches.push({
         id, checked: (await getState(page)).plans[id],

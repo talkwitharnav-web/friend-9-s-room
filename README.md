@@ -40,6 +40,12 @@ preferences. Starting a fresh visit asks before clearing this room's state
 and retains reading settings and theme. Text is deliberately non-selectable
 throughout this illustrated page; native controls remain keyboard-accessible.
 
+The artwork itself accepts the same actions as the visible buttons. SVG
+geometry IDs are therefore interaction anchors, not arbitrary labels. Keep
+`sceneObjects`/`sceneScraps`, numbered hotspot positions, and the geometry
+checks aligned when moving or renaming an item. Crumb's marker follows the
+cat between rug and chair; the keyboard and mobile controls stay the same.
+
 ## Visit and run
 
 - Share: `https://itsvibed.com/friend9s-room`

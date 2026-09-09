@@ -15,7 +15,7 @@ export const TRACKS = Object.freeze(["Window seat", "Slow Sunday", "The scenic r
 const postcards = [
   {
     title: "The Ferry Was Punctual",
-    glance: "The ferry, leaving. My best picture of punctuality.",
+    glance: "The ferry, leaving. That was the one I meant to catch.",
   },
   {
     title: "Backstep's Ninth Chair",
@@ -68,7 +68,7 @@ const stories = {
     glance: state.plans.mug
       ? "Jo made this mug. The handle makes sense if you tilt your head. I'm using it for tea."
       : "Jo's crooked mug gets the pencils today. I'll take a plain cup for tea.",
-    detail: `Jo drinks ginger; Inez likes mint. Reversing them once produced forty minutes of polite swapping. The mug doesn't leak. I tested it over a pessimistic towel.${state.tea !== "none" ? ` Today's tea is ${state.tea}.` : ""}`,
+    detail: `Jo drinks ginger; Inez likes mint. Reversing them once produced forty minutes of polite swapping. The mug doesn't leak. I checked it over a towel, just in case.${state.tea !== "none" ? ` Today's tea is ${state.tea}.` : ""}`,
     related: "plant", link: "Another of Jo's gifts",
   }),
   book: (state) => ({
@@ -76,7 +76,7 @@ const stories = {
     glance: state.plans.mug
       ? "The detective has overlooked a bicycle. My three pencil objections can stay in the drawer while we have tea."
       : "The detective has overlooked a bicycle. My pencil objections now have a crooked pencil holder.",
-    detail: "Inez reads endings first. Jo remembers every suspect except the guilty one. Over buns, we discuss entirely different versions of the same book. My old ferry ticket is the bookmark.",
+    detail: "Inez reads endings first. Jo remembers every suspect except the guilty one. We eat buns and disagree about what happened. My old ferry ticket is the bookmark.",
     related: "tea", link: "Meet the book club's cups",
   }),
   mending: (state) => ({
@@ -98,9 +98,8 @@ const stories = {
 };
 
 export function getStory(id, state) {
-  const story = stories[id];
-  if (!story) throw new Error(`Unknown room story: ${id}`);
-  return story(state);
+  if (!Object.hasOwn(stories, id)) throw new Error(`Unknown room story: ${id}`);
+  return stories[id](state);
 }
 
 const scraps = {
@@ -153,8 +152,8 @@ const scraps = {
 };
 
 export function getScrap(id, state) {
+  if (!Object.hasOwn(scraps, id)) throw new Error(`Unknown room scrap: ${id}`);
   const scrap = scraps[id];
-  if (!scrap) throw new Error(`Unknown room scrap: ${id}`);
   return { ...scrap, reaction: scrap.reaction(state) };
 }
 
@@ -192,14 +191,14 @@ export function planReaction(id, state) {
   if (id === null) {
     return `${state.plans.scenic ? "Towpath" : "Market square"}, ${state.plans.radio ? "a radio ready for Jo" : "a little radio"}, and ${state.plans.mug ? "the wonky mug" : "a plain cup"}. For this afternoon.`;
   }
-  if (!planLines[id]) throw new Error(`Unknown afternoon plan: ${id}`);
+  if (!Object.hasOwn(planLines, id)) throw new Error(`Unknown afternoon plan: ${id}`);
   return planLines[id][Number(state.plans[id])];
 }
 
 export function residentLine(prompt, state, turn = 0) {
   if (prompt.startsWith("plan:")) {
     const id = prompt.slice(5);
-    if (!planReplies[id]) throw new Error(`Unknown conversation plan: ${id}`);
+    if (!Object.hasOwn(planReplies, id)) throw new Error(`Unknown conversation plan: ${id}`);
     return planReplies[id][Number(state.plans[id])];
   }
   const pools = {
@@ -231,7 +230,7 @@ export function residentLine(prompt, state, turn = 0) {
       "Fennel bread is a conversation I will finish when I have more time and less fennel bread.",
     ],
   };
-  if (!pools[prompt]) throw new Error(`Unknown resident prompt: ${prompt}`);
+  if (!Object.hasOwn(pools, prompt)) throw new Error(`Unknown resident prompt: ${prompt}`);
   return pools[prompt][turn % pools[prompt].length];
 }
 

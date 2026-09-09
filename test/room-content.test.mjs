@@ -65,4 +65,7 @@ test("content boundaries reject unknown identifiers instead of masking bad links
   assert.throws(() => getScrap("missing", state), /Unknown room scrap/);
   assert.throws(() => planReaction("missing", state), /Unknown afternoon plan/);
   assert.throws(() => residentLine("missing", state), /Unknown resident prompt/);
+  assert.throws(() => getStory("constructor", state), /Unknown room story/);
+  assert.throws(() => getScrap("__proto__", state), /Unknown room scrap/);
+  assert.throws(() => planReaction("toString", state), /Unknown afternoon plan/);
 });

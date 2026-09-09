@@ -145,15 +145,19 @@ h1 em { color: var(--green); }
 .hotspot.is-found .hotspot-dot { color: #fffdf6; background: #355c47; border-color: #fffdf6; }
 .hotspot-name { position: absolute; bottom: calc(100% + 3px); left: 50%; translate: -50% 0; padding: .3rem .7rem; border-radius: .5rem .6rem .4rem .5rem; font-size: .8rem; white-space: nowrap; color: #fffdf6; background: #2d3e31; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity var(--dur-instant); box-shadow: 0 3px 9px rgb(0 0 0 / 12%); }
 .hotspot:hover .hotspot-name, .hotspot:focus-visible .hotspot-name, .hotspot[aria-pressed="true"] .hotspot-name { opacity: 1; visibility: visible; }
-.hotspot-window { left: 22%; top: 24%; }
-.hotspot-postcards { left: 49.5%; top: 22%; }
-.hotspot-plant { left: 31.5%; top: 46%; }
-.hotspot-radio { left: 40.5%; top: 58%; }
-.hotspot-lamp { left: 58%; top: 37%; }
-.hotspot-tea { left: 59%; top: 65%; }
-.hotspot-book { left: 79%; top: 52%; }
-.hotspot-mending { left: 21%; top: 81%; }
-.hotspot-cat { left: 76%; top: 85%; }
+.hotspot-window { left: 20.8333%; top: 24.1772%; }
+.hotspot-postcards { left: 49.75%; top: 19.6203%; }
+.hotspot-plant { left: 29.5%; top: 39.6203%; }
+.hotspot-radio { left: 41.4167%; top: 56.0759%; }
+.hotspot-lamp { left: 59.5%; top: 38.8608%; }
+.hotspot-tea { left: 56.1667%; top: 61.2658%; }
+.hotspot-book { left: 77.4167%; top: 57.7215%; }
+.hotspot-mending { left: 20.4167%; top: 78.9873%; }
+.hotspot-cat { left: 73.9167%; top: 86.4557%; }
+[data-cat="chair"] .hotspot-cat { left: 85.25%; top: 67.4684%; }
+:root[data-ready="true"] .artwork :is(#window, #curtains-left, #curtains-right, #curtain-rod,
+  #postcard, #bakery-postcard, #basil, #radio, #lamp, #tea, #resident-book,
+  #repair-basket, #cat-on-rug, #cat-on-chair, #bookshelf, #bicycle, #table-drawer) { cursor: pointer; }
 .scene-footer { display: flex; align-items: center; justify-content: space-evenly; flex-wrap: wrap; gap: .5rem; padding: .7rem 1rem; color: var(--secondary); }
 .corner-button { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 44px; border: 1px solid transparent; background: transparent; color: var(--green); font-size: .82rem; padding: .4rem .65rem; border-radius: .7rem; }
 .corner-button:hover { background: var(--soft); border-color: var(--line); }
@@ -297,6 +301,11 @@ kbd { display: inline-block; border: 1px solid var(--line); border-bottom-width:
 [data-tea="mint"] .resident-reading-hand, [data-tea="ginger"] .resident-reading-hand { display: none; }
 [data-bookmarked="true"] .book-bookmark { display: block; }
 [data-pinned="true"] .postcard-pin { display: block; }
+[data-radio-packed="true"] .radio-packed { display: block; }
+[data-route="direct"] .route-scenic { display: none; }
+[data-route="direct"] .route-direct { display: block; }
+[data-mug-kept="false"] .mug-kept { display: none; }
+[data-mug-kept="false"] .mug-plain, [data-mug-kept="false"] .mug-shelf { display: block; }
 [data-sound="on"] .radio-light { fill: #ebaa54; }
 [data-track="1"] .radio-needle { transform: translateX(6px); }
 [data-track="2"] .radio-needle { transform: translateX(12px); }

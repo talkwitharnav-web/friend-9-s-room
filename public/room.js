@@ -54,6 +54,36 @@ let audioTimer;
 let audioBusy = false;
 let soundWanted = false;
 const activeNotes = new Set();
+const sceneObjects = new Map(Object.entries({
+  window: "window", "curtains-left": "window", "curtains-right": "window", "curtain-rod": "window",
+  postcard: "postcards", "bakery-postcard": "postcards", basil: "plant", radio: "radio",
+  lamp: "lamp", tea: "tea", "shelf-mug": "tea", "resident-book": "book", "repair-basket": "mending",
+  "cat-on-rug": "cat", "cat-on-chair": "cat",
+}));
+const sceneScraps = new Map(Object.entries({
+  bookshelf: "shelf", "biscuit-tin": "tin", "route-map": "map", "table-drawer": "drawer",
+  bicycle: "bicycle", "bakery-order-slip": "nine", "bakery-chair-nine": "nine",
+}));
+
+function selectIllustration(event) {
+  const artwork = event.currentTarget;
+  let element = event.target instanceof Element ? event.target : null;
+  while (element && element !== artwork) {
+    const object = sceneObjects.get(element.id);
+    const scrap = sceneScraps.get(element.id);
+    if (object) {
+      document.querySelector(`button[data-object="${object}"]`).focus({ preventScroll: true });
+      selectObject(object, { moveToNote: true });
+      return;
+    }
+    if (scrap) {
+      document.querySelector(`button[data-scrap="${scrap}"]`).focus({ preventScroll: true });
+      showScrap(scrap);
+      return;
+    }
+    element = element.parentElement;
+  }
+}
 
 function persistState() {
   try {
@@ -123,7 +153,7 @@ const objects = {
   plant: {
     ...storyFields("plant"),
     actions: () => [
-      roomAction("water", state.watered ? "Watered for today" : "A sip for the basil", () => changeState({ watered: true }, "Leaves up. A small success."), { disabled: state.watered, icon: "water" }),
+      roomAction("water", state.watered ? "Watered for now" : "A sip for the basil", () => changeState({ watered: true }, "Leaves up. A small success."), { disabled: state.watered, icon: "water" }),
     ],
   },
   radio: {
@@ -569,6 +599,7 @@ async function setSound(enabled) {
   }
 }
 
+document.querySelector(".artwork").addEventListener("click", selectIllustration);
 for (const button of document.querySelectorAll("[data-interactive]")) button.disabled = false;
 for (const button of document.querySelectorAll("[data-object]")) {
   button.addEventListener("click", () => {

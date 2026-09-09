@@ -19,15 +19,30 @@
     <pattern id="rug-lines" width="13" height="13" patternUnits="userSpaceOnUse" patternTransform="rotate(-13)">
       <path d="M0 0h13" stroke="#ede1bd" stroke-width="3" opacity=".6"/>
     </pattern>
-    <clipPath id="window-clip"><rect x="100" y="88" width="298" height="287" rx="60"/></clipPath>
+    <clipPath id="window-clip"><path d="M100 375V150a62 62 0 0 1 62-62h174a62 62 0 0 1 62 62v225Z"/></clipPath>
     <g id="crumb-drawing" stroke="#685342" stroke-width="2.5" stroke-linejoin="round">
-      <path d="M-55 17c-23-22-2-47 24-37 18-22 57-19 71 6 26 1 45 31 20 43-28 16-91 15-112-3" fill="#ddb88c"/>
-      <path d="M-21-12-29-42-5-28 11-31 29-45 30-15c7 31-48 42-51 3Z" fill="#e4c49a"/>
-      <path d="m-24-35 15 10m32-12-11 11" stroke="#ba8f71" stroke-width="4"/>
-      <path d="M-53 28c-31-8-45 10-18 17 21 6 45-3 64-10" fill="#c4936f" stroke-width="7" stroke-linecap="round"/>
-      <path d="m-13-8 8 2m17-2 8-3m-18 9 5 1-2 5Z" fill="#685342" stroke-linecap="round"/>
-      <path d="m-7 10-18 1m18 4-19 5M17 9l18-4m-17 9 19 2" stroke-width="1.5"/>
-      <path d="M39-8 45 3m1-3 6 7M-2-28l-3 10m10-11-1 10" fill="none" stroke="#b3815e" stroke-width="4"/>
+      <ellipse cx="3" cy="39" rx="64" ry="8" fill="#695542" opacity=".16" stroke="none"/>
+      <g id="cat-body" data-geometry="cat-body">
+        <path d="M-46 21c-17-14-14-36 1-49 18-27 55-32 83-17C62-32 73-8 63 17 56 36 28 42 2 36l-31-2Z" fill="#ddb88c"/>
+        <path d="M-39-20c-13 14-15 33-2 45 10 9 26 10 34 4-13-13-9-29-3-42Z" fill="#eed5ac" stroke="none"/>
+        <path d="M17-34c21-1 35 20 29 38M7-48l1 11m10-11 1 10m12-7 3 9" fill="none" stroke="#b68561" stroke-width="3.5" stroke-linecap="round"/>
+      </g>
+      <path id="cat-tail" data-geometry="cat-tail" d="M53-1c19 9 19 29-3 39-20 10-54 7-76-4-9-5-8-14 1-14 23 9 49 13 66 5 12-5 13-15 9-21Z" fill="#c79870"/>
+      <path d="M48 29 53 36M34 33l2 9M18 33v9" fill="none" stroke="#b1815e" stroke-width="3" stroke-linecap="round"/>
+      <g id="cat-paws" data-geometry="cat-paws" fill="#edd1a7">
+        <path d="M-43 17c-13-2-18 12-11 17 6 5 22 5 26 0 4-6-3-15-15-17Z"/>
+        <path d="M-20 22c-11-2-16 9-10 14 6 4 21 4 25-1 3-6-5-12-15-13Z"/>
+        <path d="m-48 29 1 5m6-5 1 5m18-3 1 5m6-5 1 5" fill="none" stroke="#b08b69" stroke-width="1.3" stroke-linecap="round"/>
+      </g>
+      <g id="cat-head" data-geometry="cat-head">
+        <path d="m-58-25-3-33c8 0 17 6 23 14 8-3 15-2 22 1l14-13-1 34C3 3-17 16-35 11-53 8-62-7-58-25Z" fill="#e6c69b"/>
+        <path d="m-55-48 3 17 10-10Zm48 2-8 8 9 9Z" fill="#c98f77" stroke="none"/>
+        <path d="M-50-17q6 7 13 0m15 0q6 6 12-1" fill="none" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="m-34-8 9-1-4 6Z" fill="#a9715c" stroke="none"/>
+        <path d="M-29-3v4m0 0q-5 5-9 0m9 0q5 4 8-1" fill="none" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="m-50-4-18-3m18 9-17 4m52-11 17-5m-16 11 17 2" fill="none" stroke="#947359" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="m-36-39 2 10m7-11 1 9" fill="none" stroke="#b68561" stroke-width="3" stroke-linecap="round"/>
+      </g>
     </g>
   </defs>
 
@@ -44,18 +59,45 @@
   <path d="m1070 0 0 536" fill="none" stroke="#bac4a6" stroke-width="3"/>
 
   <!-- The view is imaginary, and the weather is entirely up to the visitor. -->
+  <g id="window" data-geometry="window">
   <path d="M75 395V144a83 83 0 0 1 83-83h188a83 83 0 0 1 83 83v251Z" fill="#ba9870" stroke="#8d7657" stroke-width="3"/>
   <path d="M92 388V147a67 67 0 0 1 67-67h185a67 67 0 0 1 67 67v241Z" fill="#f2e9c9"/>
-  <g clip-path="url(#window-clip)">
+  <g id="window-landscape" data-geometry="window-landscape" clip-path="url(#window-clip)">
     <rect class="window-sky" x="100" y="88" width="298" height="300" fill="url(#window-wash)"/>
     <circle class="window-sun" cx="333" cy="139" r="34" fill="#f8e6a7"/>
     <g fill="#f5efd7" opacity=".58"><ellipse cx="175" cy="137" rx="44" ry="12"/><ellipse cx="155" cy="129" rx="21" ry="12"/><ellipse cx="281" cy="218" rx="44" ry="10"/></g>
-    <path class="window-hills" d="M74 316c76-88 104-87 164-46s112-62 179-22v140H74Z" fill="#94ad87"/>
-    <path d="M82 353c70-49 136-31 177-15 55-55 108-40 155-24v84H82Z" fill="#6f9376"/>
-    <path d="M228 385c-19-35 11-43 40-48 15-3 13-14 7-20" fill="none" stroke="#e9d9ac" stroke-width="12" stroke-linecap="round"/>
-    <g fill="#547860">
-      <path d="m125 312 14-44 16 44Zm12-18 2-45 15 51M358 302l19-55 24 55Z"/>
-      <rect x="139" y="297" width="5" height="40"/><rect x="377" y="282" width="6" height="42"/>
+    <path class="window-hills" d="M86 288c35-37 70-45 104-37 37 12 57 36 82 29 26-8 42-30 75-34 27-4 47 3 64 16v137H86Z" fill="#94ad87"/>
+    <path d="M93 330c42-29 91-31 140-23 24 4 32-1 46-11 33-22 88-13 132 18v85H93Z" fill="#85a078"/>
+    <path id="landscape-verge-left" data-geometry="landscape-verge-left" d="M93 341c44-18 91-16 136-5 24 6 34-1 52-13l18 11c-10 14-34 16-42 29-9 14-9 27-6 40H93Z" fill="#6f9376"/>
+    <path id="landscape-verge-right" data-geometry="landscape-verge-right" d="M298 297c31-11 75-6 113 17v89h-67c-10-22-38-29-40-38-1-9 28-16 27-33-1-16-28-24-33-35Z" fill="#75966d"/>
+    <path d="M287 278c-2 12-25 18-25 29 0 15 28 18 28 25 1 9-27 14-35 27-10 15-7 31-6 44h96c-11-25-42-30-44-39-1-8 29-14 28-33-1-17-37-19-40-26-2-8 11-17 9-27Z" fill="#aeb789"/>
+    <path id="path-corridor" data-geometry="path-corridor" d="M289 279c-2 11-22 17-22 27 0 12 28 16 29 24 2 11-28 16-35 30-8 14-3 29-2 43h77c-10-22-40-28-41-37-1-9 27-16 27-33 0-17-36-18-39-26-2-9 12-17 11-28Z" fill="#e7d6ac" stroke="#9fa97f" stroke-width="1.3"/>
+    <path d="M282 377c-7-9-3-15 8-22m14-18 3-4m-26-28 2-3" fill="none" stroke="#c7b58c" stroke-width="1.8" stroke-linecap="round"/>
+    <g id="valley-cottage" data-geometry="valley-cottage" data-landmark="Backstep Bakery" stroke="#6f7554" stroke-width="1.3" stroke-linejoin="round">
+      <path d="M280 262h27v19h-27Z" fill="#d9bd8c"/>
+      <path d="M277 263 293 251l18 12Z" fill="#ae7156"/>
+      <path d="M302 256v-8h5v12" fill="#a57555"/>
+      <path d="M288 281v-11h7v11" fill="#746c4c"/>
+      <rect x="298" y="268" width="5" height="6" fill="#eed59a"/>
+      <path d="M281 268h5" stroke="#e8d8b0" stroke-width="3"/>
+      <path d="M282 284h6m9-1h11" stroke="#839363"/>
+      <text x="293.5" y="266.5" text-anchor="middle" font-family="Georgia,serif" font-size="3.8" fill="#786044" stroke="none">BACKSTEP</text>
+    </g>
+    <g fill="#547860" stroke="#52735a" stroke-width="1.3" stroke-linejoin="round">
+      <path d="M145 332v-44m-16 21 16-45 19 45Z"/>
+      <path d="m132 294 13-42 16 42Z" fill="#628465"/>
+      <path d="M363 328v-43m-16 23 16-49 22 49Z"/>
+      <path d="m352 289 11-38 17 38Z" fill="#648566"/>
+      <path d="m112 350 4-8 3 9m68-20 4-7 4 9m43 34-3-9-4 9m102-19 4-11 4 10m36 13 4-7 4 9" fill="none" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <g id="path-fence" data-geometry="path-fence" fill="none" stroke="#8a805c" stroke-linecap="round">
+      <path d="M244 377v-20m11 4v-17m15 4v-14" stroke-width="3"/>
+      <path d="m244 362 11-13 15-11m-26 33 11-14 15-12" stroke-width="2"/>
+    </g>
+    <g id="alder-quay-sign" data-geometry="alder-quay-sign" stroke="#827b58" stroke-width="1.4" stroke-linejoin="round">
+      <path d="M217 313v18" fill="none" stroke-width="3"/>
+      <path d="M187 301h48l9 7-9 7h-48Z" fill="#d2c08f"/>
+      <text x="213" y="310.5" text-anchor="middle" font-family="Georgia,serif" font-size="7.2" fill="#697052" stroke="none">Alder Quay</text>
     </g>
     <g class="window-stars" fill="#f4e7b9">
       <circle cx="160" cy="113" r="2.3"/><circle cx="228" cy="170" r="2"/><circle cx="321" cy="199" r="2.5"/><circle cx="365" cy="123" r="2"/>
@@ -68,12 +110,40 @@
   </g>
   <path d="M250 81v303M94 230h309" fill="none" stroke="#a98a64" stroke-width="13"/>
   <path d="M246 81v303M94 226h309" fill="none" stroke="#e7d4a9" stroke-width="5"/>
-  <path d="M65 387h380v17H65Z" fill="#bb9468" stroke="#8d7657" stroke-width="2.5"/>
-  <path d="M46 72c10 85 13 191-4 291l30 10c13-86 11-198 6-294Z" fill="#eee4c1" stroke="#cfc5a4" stroke-width="2"/>
-  <path d="M53 79c12 82 13 211-2 277M65 79c7 78 10 201 0 273" fill="none" stroke="#d6caa6" stroke-width="2"/>
+  <g id="window-sill" data-geometry="window-sill" data-top-y="387" stroke="#8d7657" stroke-width="2.5" stroke-linejoin="round">
+    <path d="M65 387h380v18H65Z" fill="#bb9468"/>
+    <path d="M65 387h380v6H65Z" fill="#ddc193" stroke-width="1.5"/>
+    <path d="M81 406h347" fill="none" stroke="#7d7657" opacity=".16" stroke-width="5"/>
+  </g>
+  </g>
+  <g id="curtain-rod" data-geometry="curtain-rod" fill="#b09063" stroke="#856e51" stroke-width="2">
+    <path d="M24 57h454" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="23" cy="57" r="7"/><circle cx="479" cy="57" r="7"/>
+    <path d="M41 50v-8m423 8v-8" fill="none" stroke-width="3"/>
+  </g>
+  <g id="curtains-left" data-geometry="curtains-left" data-tie="47,272" data-outside="left" stroke-linejoin="round">
+    <g fill="none" stroke="#ae9167" stroke-width="2.5">
+      <ellipse cx="42" cy="64" rx="5" ry="8"/><ellipse cx="63" cy="64" rx="5" ry="8"/>
+      <ellipse cx="84" cy="64" rx="5" ry="8"/><ellipse cx="104" cy="64" rx="5" ry="8"/>
+    </g>
+    <path d="M32 72q38 7 78 0c0 66-16 142-47 190l-5 17c12 34 24 73 24 110-19 9-37 9-55 0 5-38 9-74 7-110-9-64-8-144-2-207Z" fill="#eee1bd" stroke="#bfa880" stroke-width="2.5"/>
+    <path d="M43 81c-8 73-6 141 1 183m18-183c-1 73-9 138-15 182M82 81c-3 71-16 134-30 183m49-184c-2 63-22 140-41 182M42 282c3 36-3 73-3 107m13-107c5 34 4 77 6 109m0-108c10 33 12 70 13 105" fill="none" stroke="#cdb88f" stroke-width="2"/>
+    <path d="M33 265q15 6 30-2l-5 15q-11 5-24-1Z" fill="#bc9869" stroke="#9f7f59" stroke-width="1.5"/>
+    <path d="M34 272h-9m5-1c-18-15-20 8-1 6m1-5c-10 14 8 16 8 4m-9 1-7 18m10-14 5 18M31 383q24 9 47 0" fill="none" stroke="#b1946b" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <g id="curtains-right" data-geometry="curtains-right" data-tie="456,272" data-outside="right" stroke-linejoin="round">
+    <g fill="none" stroke="#ae9167" stroke-width="2.5">
+      <ellipse cx="398" cy="64" rx="5" ry="8"/><ellipse cx="420" cy="64" rx="5" ry="8"/>
+      <ellipse cx="442" cy="64" rx="5" ry="8"/><ellipse cx="464" cy="64" rx="5" ry="8"/>
+    </g>
+    <path d="M392 72q40 7 80 0c8 81 7 147-2 204-1 40 5 78 11 113-18 9-38 9-55 0 1-39 15-76 18-111l-5-15c-25-49-45-118-47-191Z" fill="#eee1bd" stroke="#bfa880" stroke-width="2.5"/>
+    <path d="M404 81c3 69 19 133 41 183m-25-183c5 73 20 139 31 184m-10-184c3 77 11 135 16 184m8-183c8 71 4 137-2 182m-15 19c-2 34-12 69-12 105m20-106c-1 39 2 73 2 109m7-109c-1 36 7 74 7 106" fill="none" stroke="#cdb88f" stroke-width="2"/>
+    <path d="M439 264q16 7 32 0l-1 14q-13 6-26 0Z" fill="#bc9869" stroke="#9f7f59" stroke-width="1.5"/>
+    <path d="M470 272h10m-5 0c15-15 22 7 3 6m-1-5c10 13-8 16-8 4m9 1 8 18m-12-15-5 19m-39 83q23 9 46 0" fill="none" stroke="#b1946b" stroke-width="2" stroke-linecap="round"/>
+  </g>
 
   <!-- Mementos of detours, not a wall of credentials. -->
-  <g transform="translate(529 91) rotate(-7)">
+  <g id="postcard" data-geometry="postcard" transform="translate(529 91) rotate(-7)">
     <rect x="-5" y="3" width="127" height="148" rx="2" fill="#697058" opacity=".11"/>
     <rect width="119" height="144" rx="2" fill="#f9f2da" stroke="#c9b998" stroke-width="2"/>
     <rect class="postcard-scene" x="9" y="10" width="101" height="98" fill="#a4c1b1"/>
@@ -90,6 +160,7 @@
       <path d="M53 101V64h23v37" fill="#655e48"/>
       <rect x="31" y="60" width="16" height="20" fill="#f1d795"/>
       <path d="M9 102h101v6H9Z" fill="#c5b08a"/>
+      <text x="60" y="37" text-anchor="middle" font-family="Georgia,serif" font-size="6.4" fill="#766249">BACKSTEP</text>
     </g>
     <g class="postcard-path">
       <path d="M9 84c31-22 61-16 101 4v20H9Z" fill="#527c5c"/>
@@ -100,12 +171,19 @@
     <text x="59" y="128" text-anchor="middle" fill="#74624d" font-family="Georgia,serif" font-size="12">the long way home</text>
     <path d="M37-7h47v17H37Z" fill="#d6c28a" opacity=".8"/>
   </g>
-  <g transform="translate(665 163) rotate(9)">
+  <g id="bakery-postcard" data-geometry="bakery-postcard" transform="translate(665 163) rotate(9)">
     <rect width="100" height="116" fill="#f9f0d5" stroke="#c6b797" stroke-width="2"/>
     <rect x="8" y="9" width="84" height="76" fill="#ccad86"/>
     <path d="M21 77V32h56v45" fill="#b77354"/><path d="M16 39h66V28H16Z" fill="#ede1b8"/>
     <path d="M37 77V51h21v26" fill="#665e48"/><circle cx="53" cy="66" r="2" fill="#ead6a6"/>
     <path d="M17 38h65" stroke="#819478" stroke-width="8" stroke-dasharray="10 6"/>
+    <text x="49" y="33" text-anchor="middle" font-family="Georgia,serif" font-size="6.2" fill="#766249">BACKSTEP</text>
+    <g id="bakery-chair-nine" data-geometry="bakery-chair-nine" stroke="#6c7654" stroke-width="1.5" stroke-linejoin="round">
+      <path d="M65 55h15v14H65Z" fill="#a6b18a"/>
+      <path d="M63 70h20v4H63Z" fill="#bac29a"/>
+      <path d="m65 74-2 8m18-8 2 8" fill="none"/>
+      <text x="72.5" y="66" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#606749" stroke="none">9</text>
+    </g>
     <text x="50" y="103" text-anchor="middle" fill="#74624d" font-family="Georgia,serif" font-size="11">worth the detour</text>
     <path d="M31-6h39v16H31Z" fill="#c8cc9b" opacity=".85"/>
   </g>
@@ -121,49 +199,196 @@
     <path d="M65 77c24 7 49-9 67-3" fill="none" stroke="#9b9471" stroke-width="1.5"/>
   </g>
 
-  <!-- A small shelf and the bicycle helmet waiting for the next trip. -->
-  <g stroke="#806d52" stroke-width="2.5" stroke-linejoin="round">
-    <path d="M32 465h157v154H32Z" fill="#b18e65"/>
-    <path d="M42 474h137v135H42Z" fill="#8f7857"/>
-    <path d="M27 536h167v12H27ZM27 611h167v12H27Z" fill="#c8a777"/>
-    <path d="M51 480h21v56H51Z" fill="#9fa97b"/><path d="M75 488h14v48H75Z" fill="#d8be8a"/>
-    <path d="m97 480 18-3 12 56-18 3Z" fill="#b77961"/>
-    <path d="M131 491h23v45h-23Z" fill="#74968c"/><path d="M158 485h13v51h-13Z" fill="#ded5b6"/>
-    <path d="M48 559h53v50H48Z" fill="#d6be99"/><path d="m44 559 31-21 30 21Z" fill="#e2cea6"/>
-    <path d="M62 581h25v16H62Z" fill="#bc9870"/>
-    <path d="M114 582h59v13h-59Zm8 13h51v14h-51Z" fill="#9ba47e"/>
+  <!-- The bookcase stands in front of the window, with room for small things. -->
+  <g id="bookshelf" data-geometry="bookshelf" data-floor-y="646" stroke="#806d52" stroke-width="2.5" stroke-linejoin="round">
+    <ellipse cx="136" cy="644" rx="113" ry="14" fill="#79684e" opacity=".18" stroke="none"/>
+    <g id="bookshelf-feet" data-geometry="bookshelf-feet" fill="#98764f">
+      <path d="M42 623h17l-3 24H42Zm149 0h17v23h-16Zm30-10 12-3-1 22-11 4Z"/>
+    </g>
+    <path d="M217 343 239 337v280l-22 13Z" fill="#a17d54"/>
+    <path d="M27 343h190v287H27Z" fill="#b99364"/>
+    <path d="M39 351h164v266H39Z" fill="#8f7857"/>
+    <path d="m25 335 190-8 24 10-194 10Z" fill="#d1b080"/>
+    <path d="M25 337h194v12H25Z" fill="#c6a273"/>
+    <g id="shelf-books" data-geometry="shelf-books">
+      <path d="M47 358h18v58H47Z" fill="#9fa97b"/>
+      <path d="M68 366h14v50H68Z" fill="#d8be8a"/>
+      <path d="m87 358 17-2 9 59-17 2Z" fill="#b77961"/>
+      <path d="M117 372h20v44h-20Z" fill="#74968c"/>
+      <path d="M140 365h9v51h-9Z" fill="#ded5b6"/>
+      <path d="M50 366h12m-12 42h12m9-34h8m18-5 11-1m-5 37 10-1m16-25h9m-9 26h9" fill="none" stroke="#e3d0a8" stroke-width="1.8"/>
+      <path d="M45 413h-3v-29h5m101 29h6v-26h-5" fill="none" stroke="#68725b" stroke-width="4"/>
+      <g fill="#efe0bb" stroke="none" font-family="Georgia,serif" font-size="7">
+        <text transform="translate(59 406) rotate(-90)">MYSTERIES</text>
+        <text transform="translate(78 407) rotate(-90)" fill="#79694e">ROUTES</text>
+        <text transform="translate(130 410) rotate(-90)">REPAIRS</text>
+      </g>
+    </g>
+    <g id="shelf-picture" data-geometry="shelf-picture">
+      <path d="m159 363 40-2 2 56h-42Z" fill="#b39165"/>
+      <path d="m164 368 30-1 2 43h-31Z" fill="#e5d8b5" stroke-width="1.3"/>
+      <path d="M166 401c8-9 15-10 28-1v8h-28Z" fill="#93a085" stroke="none"/>
+      <path d="M174 393v-9h13v15h-13Zm-3-9 10-8 10 8" fill="#7d8061" stroke="none"/>
+      <circle cx="188" cy="374" r="3" fill="#c9aa70" stroke="none"/>
+    </g>
+    <path d="M25 417h194v12H25Zm0 69h194v11H25Zm0 66h194v12H25Zm0 66h194v12H25Z" fill="#c8a777"/>
+    <path d="m219 417 20-6v12l-20 6m0 57 20-6v11l-20 6m0 55 20-6v12l-20 6m0 54 20-6v12l-20 6" fill="#af895a"/>
+    <g id="half-open-book" data-geometry="half-open-book" stroke-width="1.8">
+      <path d="m45 481 8-43 29 7 23-12 9 47-30 6Z" fill="#8c9b7a"/>
+      <path d="m51 478 6-36 24 7 20-11 7 39-24 6Z" fill="#ede0b9" stroke="#b4a27b"/>
+      <path d="m81 449 2 34m-23-33 15 5m-16 3 15 5m-16 3 15 5m15-21 9-5m-8 14 9-5m-7 14 9-5" fill="none" stroke="#ad9c75" stroke-width="1.2"/>
+    </g>
+    <g id="biscuit-tin" data-geometry="biscuit-tin" stroke="#8d7154" stroke-width="1.8">
+      <ellipse cx="145" cy="450" rx="21" ry="5" fill="#d2a27d"/>
+      <path d="M123 457h42v24c-9 6-32 6-42 0Z" fill="#bd8063"/>
+      <ellipse cx="144" cy="457" rx="21" ry="5" fill="#7e7558"/>
+      <g id="spare-washers" data-geometry="spare-washers" fill="none" stroke="#c5bea0" stroke-width="1.8">
+        <ellipse cx="134" cy="457" rx="4" ry="2"/>
+        <ellipse cx="145" cy="459" rx="4" ry="2"/>
+        <ellipse cx="155" cy="456" rx="4" ry="2"/>
+      </g>
+      <path d="M124 462c13 4 27 4 40 0" fill="none" stroke="#e1bf96"/>
+      <rect x="129" y="466" width="30" height="12" rx="3" fill="#e6d4ac" stroke="none"/>
+      <text x="144" y="474" text-anchor="middle" font-family="Georgia,serif" font-size="6.5" fill="#796147" stroke="none">BISCUITS</text>
+    </g>
+    <g id="bakery-order-slip" data-geometry="bakery-order-slip">
+      <path d="m176 485 4-9h13l5 9Z" fill="#a4865c"/>
+      <path d="M174 451h26v31l-4-2-4 2-4-2-5 2-4-2-5 2Z" fill="#eaddb7" stroke="#b6a07a" stroke-width="1.4"/>
+      <rect x="183" y="449" width="8" height="4" rx="1" fill="#bc9e63" stroke="#92774e" stroke-width="1"/>
+      <text x="187" y="459" text-anchor="middle" font-family="Georgia,serif" font-size="4.8" fill="#756342" stroke="none">BACKSTEP</text>
+      <text x="187" y="465" text-anchor="middle" font-family="Georgia,serif" font-size="4.8" fill="#756342" stroke="none">chair</text>
+      <text x="187" y="479" text-anchor="middle" font-family="Georgia,serif" font-size="17" fill="#756342" stroke="none">9</text>
+    </g>
+    <g id="route-map" data-geometry="route-map" stroke-width="1.5">
+      <path d="m44 501 78 3-1 47-77-3Z" fill="#eddfb9" stroke="#b6a17b"/>
+      <path d="m70 503-1 46m26-45-1 46" stroke="#d5c49e"/>
+      <path d="m49 536 9-11 12 4 12-13 16 10 17-11m-66-2 15 2" fill="none" stroke="#8c9c7a" stroke-width="2"/>
+      <g class="route-scenic" fill="none" stroke="#ae6d51" stroke-width="2" stroke-linecap="round">
+        <path d="M52 541c2-20 21-1 22-16s24-15 37-13" stroke-dasharray="3 3"/>
+        <path d="M75 546h20" stroke-width="1"/>
+      </g>
+      <g class="route-direct" display="none" fill="none" stroke="#ae6d51" stroke-width="2" stroke-linecap="round">
+        <path d="m52 541 59-29" stroke-dasharray="3 3"/>
+        <path d="M100 546h17" stroke-width="1"/>
+      </g>
+      <circle cx="52" cy="541" r="2.5" fill="#ae6d51" stroke="none"/>
+      <g id="map-bakery" data-geometry="map-bakery" data-route-end="111,512" stroke="#8a684e" stroke-width="1">
+        <path d="M108 511h6v5h-6Z" fill="#d5b487"/>
+        <path d="m107 511 4-4 4 4Z" fill="#b57859"/>
+        <path d="M111 516v-3" stroke="#6b6950"/>
+      </g>
+      <g fill="#746c50" stroke="none" font-family="Georgia,serif" font-size="5.5">
+        <text x="106" y="508" text-anchor="end">Backstep</text>
+        <text x="75" y="544">towpath</text>
+        <text x="100" y="544">square</text>
+      </g>
+      <path d="M42 550h82" stroke="#b7986d" stroke-width="3"/>
+    </g>
+    <g id="keepsake-box" data-geometry="keepsake-box" stroke-width="1.8">
+      <path d="M135 522h65v28h-65Z" fill="#a4ad89"/>
+      <path d="M132 519h71v7h-71Z" fill="#bcc39e"/>
+      <rect x="145" y="531" width="45" height="12" rx="1" fill="#e7dabb" stroke="#8c9674" stroke-width="1"/>
+      <text x="167" y="540" text-anchor="middle" font-family="Georgia,serif" font-size="7.5" fill="#6d6c50" stroke="none">small things</text>
+    </g>
+    <path d="M47 602h77v15H47Z" fill="#779287"/>
+    <path d="M50 589h72v13H50Z" fill="#cfb381"/>
+    <path d="M57 576h61v13H57Z" fill="#b78165"/>
+    <path d="M132 567h12v50h-12Z" fill="#a8ad86"/>
+    <path d="M54 609h60m-57-13h56m-49-13h45m-55 26v8m10-21v6" fill="none" stroke="#e0d0aa" stroke-width="1.5"/>
+    <g id="shelf-mug" class="mug-shelf" display="none" data-geometry="shelf-mug" transform="translate(168 310)" stroke="#69816e" stroke-width="2">
+      <ellipse cy="25" rx="21" ry="3" fill="#79694d" opacity=".18" stroke="none"/>
+      <g id="mug-pencils" data-geometry="mug-pencils" stroke="#8e7957" stroke-width="1.1" stroke-linejoin="round">
+        <path d="m-8-2-7-25 4-2 8 26Z" fill="#b77960"/>
+        <path d="M-2-4v-27h4L3-4Z" fill="#7d9677"/>
+        <path d="m5-3 6-23 4 1-5 24Z" fill="#d0ae6f"/>
+        <path d="m-15-27-1-8 5 6ZM-2-31l2-8 2 8Zm13 5 5-7-1 8Z" fill="#e0c595"/>
+        <path d="m-16-35 1 3m15-7v3m16 3-1 3" fill="none" stroke="#69654c" stroke-linecap="round"/>
+      </g>
+      <path d="M-14-2q14-4 27 0l-1 18c-1 15-26 15-26-1Z" fill="#87a18a"/>
+      <path d="M13 2c16-4 18 17-1 15" fill="none" stroke-width="4"/>
+      <ellipse cy="-2" rx="13.5" ry="4" fill="#dfd2aa"/>
+      <path d="m-12 9 5 1m-5 4h5" stroke="#bdcfad" stroke-width="1.5"/>
+      <circle cx="-5" cy="15" r="1.8" fill="#476f50" stroke="none"/>
+    </g>
   </g>
-  <g transform="translate(1120 430)" stroke="#69644d" stroke-width="3" stroke-linecap="round">
-    <path d="M-13-15v-53m-12 12 13-13 11 13" fill="none"/>
-    <path d="M-54 7c-1-69 88-76 88 0Z" fill="#b66f52"/>
-    <path d="M-46 10h82v14h-82Z" fill="#dfb788"/>
-    <path d="M-38-12c12-17 17-14 16 3m14-21c8-11 14-8 14 4m9 4c10 1 14 7 14 17" fill="none" stroke="#774f3e" stroke-width="5"/>
-    <path d="M-41 24c17 30 47 30 61 0" fill="none"/>
+
+  <!-- A small-wheel bicycle is parked on the floor behind the armchair. -->
+  <g id="bicycle" data-geometry="bicycle" data-floor-y="600" stroke="#69644d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="1135" cy="604" rx="62" ry="8" fill="#75694f" opacity=".17" stroke="none"/>
+    <g id="bicycle-wheels" data-geometry="bicycle-wheels">
+      <circle cx="1107" cy="572" r="28" fill="none" stroke="#665f4c" stroke-width="3"/>
+      <circle cx="1168" cy="572" r="28" fill="none" stroke="#665f4c" stroke-width="3"/>
+      <circle cx="1107" cy="572" r="24" fill="none" stroke="#b6ac85" stroke-width="1.5"/>
+      <circle cx="1168" cy="572" r="24" fill="none" stroke="#b6ac85" stroke-width="1.5"/>
+      <path d="M1083 572h48m-24-24v48M1090 555l34 34m-34 0 34-34M1144 572h48m-24-24v48M1151 555l34 34m-34 0 34-34" fill="none" stroke="#9b9674" stroke-width="1.2"/>
+    </g>
+    <g id="bicycle-frame" data-geometry="bicycle-frame" fill="none" stroke="#a8674e" stroke-width="4">
+      <path d="M1107 572 1121 530 1133 571ZM1121 530 1149 525 1133 571m16-46 19 47M1121 530l-5-14"/>
+      <path d="m1149 525-7-47 20-5" stroke="#7e7d63" stroke-width="3"/>
+    </g>
+    <path d="M1107 515c7-5 17-4 26-2l-2 5h-22Z" fill="#826e51" stroke-width="2"/>
+    <path d="m1155 475 8-2" stroke="#675b45" stroke-width="5"/>
+    <g id="bicycle-bell" data-geometry="bicycle-bell" stroke="#897750" stroke-width="1.4">
+      <circle cx="1151" cy="473" r="4" fill="#c9ad72"/>
+      <circle cx="1150" cy="471.5" r="1" fill="#eddbac" stroke="none"/>
+      <path d="m1153 471 4-2" fill="none"/>
+    </g>
+    <circle cx="1133" cy="571" r="7" fill="#c1ad80" stroke-width="2"/>
+    <path d="m1133 571 10 7m-5 1h11m-16-8-7-7m-4 0h8m-1 16 7 18" fill="none" stroke-width="2"/>
+    <circle cx="1107" cy="572" r="2.8" fill="#b9aa7e" stroke-width="1.5"/><circle cx="1168" cy="572" r="2.8" fill="#b9aa7e" stroke-width="1.5"/>
+    <g id="bicycle-basket" data-geometry="bicycle-basket" stroke="#987853" stroke-width="1.7">
+      <path d="M1166 481c-2-9 2-15 6-10l7 10Zm13 0c-2-12 4-19 8-12l7 11Z" fill="#a78060" stroke="#7e654c" stroke-width="1.3"/>
+      <path d="m1169 476 5-2m-4 5 5-2m8-3 5-2m-4 5 5-2" fill="none" stroke="#e4d4af" stroke-width="1.2"/>
+      <path d="m1161 480 34-2-4 28-25 2Z" fill="#c9a776"/>
+      <path d="m1163 489 30-2m-28 11 27-2m-22-15 2 25m9-26-1 25m-27-22 9 2" fill="none"/>
+      <path d="m1160 480 36-2" stroke="#b59464" stroke-width="4"/>
+      <g id="bicycle-shoelace" data-geometry="bicycle-shoelace" fill="none" stroke="#e4d4af" stroke-width="1.4">
+        <path d="M1179 481c-8-8-13 4-1 3 9 1 11-8 4-5l-4 5"/>
+        <path d="M1179 484c-3 7 0 13-4 18m6-18 8 16"/>
+      </g>
+    </g>
+    <g id="bicycle-helmet" data-geometry="bicycle-helmet" stroke="#795c45" stroke-width="1.8">
+      <path d="M1143 479c-3 10-10 12-10 20" fill="none"/>
+      <path d="M1122 513c-1-24 29-28 33-5l-2 7Z" fill="#b97859"/>
+      <path d="m1123 513 31-1-1 6-28 1Z" fill="#dfba8b"/>
+      <path d="M1129 505c1-4 2-6 5-7m4 6c0-4 1-6 2-8m5 8-1-5" fill="none" stroke="#78533e" stroke-width="2.5"/>
+      <path d="M1127 519c6 18 15 17 23-2" fill="none"/>
+    </g>
   </g>
 
   <!-- The rug is large enough for exactly one extremely entitled cat. -->
+  <g id="rug" data-geometry="rug">
   <ellipse cx="682" cy="694" rx="338" ry="67" fill="#b29272" opacity=".22"/>
   <ellipse cx="671" cy="679" rx="341" ry="75" fill="#c28d72" stroke="#a97e63" stroke-width="2"/>
   <ellipse cx="671" cy="679" rx="316" ry="60" fill="#dfb49a" stroke="#eacead" stroke-width="5"/>
   <ellipse cx="671" cy="679" rx="300" ry="51" fill="url(#rug-lines)"/>
   <path d="M623 650c-13 17 11 43 44 44 28 1 58-22 47-39" fill="none" stroke="#bd8d6f" stroke-width="2"/>
+  </g>
 
   <!-- A real sit-down sort of chair. -->
   <ellipse cx="937" cy="675" rx="137" ry="28" fill="#766e55" opacity=".2"/>
-  <g stroke="#536952" stroke-width="3" stroke-linejoin="round">
+  <g id="armchair" data-geometry="armchair" stroke="#536952" stroke-width="3" stroke-linejoin="round">
     <path d="m848 596-15 88h18l26-78m156-17 29 88h17l-15-94" fill="#927655" stroke="#776248"/>
     <path d="M805 453c-14-57-2-114 26-139 20-19 138-24 164 1 36 34 49 100 43 157l-42 114-162-10Z" fill="#82966e"/>
     <path d="M832 457c-19-73-9-114 25-130 25-11 92-9 117 5 25 16 37 64 32 116" fill="#9ba97e"/>
-    <path d="M822 516c-54-49-59-7-51 30l15 57c5 14 33 28 64 20h172c35 0 69-25 69-46v-66c0-31-36-44-48-11l-16 34Z" fill="#6d8562"/>
-    <path d="M803 532c24-28 162-47 223-12l12 49c-35 27-174 25-220 1Z" fill="#a3ae81"/>
-    <path d="M791 513c-17-25-41-7-29 25 10 25 18 27 28 13Zm248-16c11-29 40-21 36 7-5 30-11 43-27 33Z" fill="#8b9e73"/>
+    <g id="chair-throw" data-geometry="chair-throw" stroke="#99795c" stroke-width="2.3">
+      <path d="M980 326c23-7 42 8 49 31l14 126q5 27 13 31-22 8-46 4c-5-17-6-38-9-70l-11-76q-4-27-10-46Z" fill="#cd9f7b"/>
+      <path d="M980 326c21-6 42 8 49 31l1 15q-14-14-34-12Z" fill="#ddb491"/>
+      <path d="M999 348c4 41 9 102 15 162m-4-161c3 53 9 132 15 164m-2-154c3 72 8 124 17 153" fill="none" stroke="#b58665" stroke-width="2"/>
+      <path d="m1006 442 34 2m-33 6 33 3" fill="none" stroke="#e7c8a0" stroke-width="4"/>
+      <path d="m1010 495 35 1m-33 8 35 1" fill="none" stroke="#e7c8a0" stroke-width="4"/>
+      <path d="m1013 520 1 10m6-10 2 11m5-11 3 10m5-11 3 10m4-12 4 10m3-12 5 9" fill="none" stroke="#c5a17d" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <path d="M822 516c-54-49-59-7-51 30l15 57c5 14 33 28 64 20h180c35 0 67-25 67-47v-62c0-31-27-43-39-11l-14 31Z" fill="#6d8562"/>
+    <path id="chair-cushion" data-geometry="chair-cushion" d="M803 532c30-28 184-37 243-12l19 47c-35 27-201 28-247 5Z" fill="#a3ae81"/>
+    <path d="M824 561c56 18 173 17 221-3" fill="none" stroke="#bdc398" stroke-width="2"/>
+    <g id="cat-on-chair" class="crumb-chair" data-geometry="cat-on-chair" data-surface="chair-cushion" data-contact-y="562" transform="translate(1023 537) scale(.62)"><use href="#crumb-drawing"/></g>
+    <path id="chair-arms" data-geometry="chair-arms" d="M791 513c-17-25-41-7-29 25 10 25 18 27 28 13ZM1063 500c12-20 35-17 30 7-5 26-12 41-26 31Z" fill="#8b9e73"/>
     <path d="M822 587c51 17 125 20 186 3" fill="none" stroke="#536952" stroke-width="2"/>
   </g>
-  <path d="M1017 367c51-12 67 26 48 64l-52 18-12-64Z" fill="#cd9f7b" stroke="#99795c" stroke-width="2.5"/>
-  <path d="m1025 378 25 7m-28 5 29 9m-31 6 26 9" stroke="#e5c8a0" stroke-width="4"/>
 
   <!-- Friend 9: an imagined resident, no professor costume required. -->
-  <g stroke="#5d4f3e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+  <g id="resident" data-geometry="resident" stroke="#5d4f3e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
     <path d="M878 491c-11 37-4 83 15 91l61 23 16-26-42-29 10-51Z" fill="#595e5b"/>
     <path d="M945 482c35 12 48 39 25 70l-35 46-24-16 18-49-34-4Z" fill="#676b61"/>
     <path d="m912 580-14 21 27 18 18-23Z" fill="#e1c491"/>
@@ -174,7 +399,11 @@
     <path d="M866 372c-20 13-33 43-22 79l17 55c32 14 100 11 119-14l-6-85c-4-44-64-59-108-35Z" fill="#bb8065"/>
     <path d="M906 367v128m-33-115 25 28m46-27-29 27" fill="none" stroke="#8d604d" stroke-width="3"/>
     <path d="M856 462c-5-28-13-48-3-64m109 17 6 48" fill="none" stroke="#d8a181" stroke-width="4"/>
-    <circle cx="912" cy="424" r="2.4" fill="#6f604b"/><circle cx="913" cy="454" r="2.4" fill="#6f604b"/>
+    <circle cx="912" cy="424" r="2.8" fill="#b55a43"/><circle cx="913" cy="454" r="2.8" fill="#b55a43"/>
+    <g id="cardigan-missing-button" data-geometry="cardigan-missing-button">
+      <path d="M910 505h7" fill="none" stroke="#805747" stroke-width="1.7"/>
+      <path d="M912 508q3-3 5 1m-4-2-1 4" fill="none" stroke="#b45442" stroke-width="1.1"/>
+    </g>
     <path d="M891 349v27c6 17 34 15 41 0l-3-31Z" fill="#c48f6b"/>
     <path d="M872 313c-15-31 7-70 42-71 45-1 65 33 49 72l-3 29c-7 39-57 46-78 11Z" fill="#d0a17a"/>
     <path d="M876 315c-20-14-9-51 5-60 15-24 45-29 68-8 23-4 39 26 18 64l-8-9c7-28-11-21-18-39-8 21-37 19-58 17l4 26Z" fill="#4c5147"/>
@@ -193,11 +422,17 @@
     <g class="resident-reading-hand">
       <path d="M954 431c28 0 39 13 28 28-6 10-30 14-44 4l-8-16Z" fill="#d0a17a"/>
     </g>
-    <g transform="translate(895 419) rotate(10)">
+    <g id="resident-book" data-geometry="resident-book" transform="translate(895 419) rotate(10)">
       <path d="m0 0 39 5 41-12v63L40 70 0 55Z" fill="#567d73"/>
       <path d="m6 3 34 7 33-10v51L40 63 6 51Z" fill="#eee1ba" stroke="#c0ad86" stroke-width="1.5"/>
       <path d="M40 10v53M11 17l22 5m-22 7 22 5m-22 7 22 5m14-26 21-7m-21 18 21-7m-21 18 21-7" fill="none" stroke="#a39472" stroke-width="1.4"/>
-      <path class="book-bookmark" d="M64-3v33l-6-5-5 9V1Z" fill="#b95543" stroke="#984330" stroke-width="1"/>
+      <g class="book-bookmark" id="ferry-ticket-bookmark" data-geometry="ferry-ticket-bookmark" stroke-width="1">
+        <path d="m53 0 14-5v33l-3-1-3 3-3-1-5 5Z" fill="#d9c08b" stroke="#a77c54"/>
+        <path d="M55 12h10l-3 4h-4Z" fill="#66877d" stroke="none"/>
+        <path d="M58 11V7h4v4" fill="#66877d" stroke="none"/>
+        <path d="m55 20 10-3" fill="none" stroke="#a38361" stroke-dasharray="1.5 1.5"/>
+        <circle cx="60" cy="25" r="2.4" fill="#b35e49" stroke="none"/>
+      </g>
     </g>
     <g class="resident-mug">
       <path d="M973 434c26 0 32-12 18-22l-15 1-19 20" fill="#d0a17a"/>
@@ -209,36 +444,93 @@
   </g>
 
   <!-- A desk with enough space for a visitor's cup. -->
-  <ellipse cx="580" cy="662" rx="235" ry="29" fill="#8a7357" opacity=".12"/>
-  <g stroke="#81674c" stroke-width="3" stroke-linejoin="round">
-    <path d="m390 537-24 129h18l38-129m328-11 20 139h18l-6-136" fill="#a27f55"/>
-    <path d="M357 500 729 468l83 45-393 42Z" fill="#ddbb83"/>
-    <path d="m357 500 62 55 393-42v18l-393 44-62-55Z" fill="#bc9360"/>
-    <path d="m419 555 0 20" fill="none"/>
-    <path d="m431 552 122-13v35l-122 13Z" fill="#b68b5b"/>
-    <path d="m482 561 25-2" fill="none" stroke="#755d40" stroke-width="4"/>
+  <g id="table" data-geometry="table" stroke="#81674c" stroke-width="3" stroke-linejoin="round">
+    <ellipse cx="586" cy="677" rx="248" ry="29" fill="#8a7357" opacity=".12" stroke="none"/>
+    <g id="table-foot-shadows" data-geometry="table-foot-shadows" fill="#79664c" opacity=".19" stroke="none">
+      <ellipse cx="358" cy="646" rx="18" ry="5"/><ellipse cx="741" cy="619" rx="17" ry="4"/>
+      <ellipse cx="426" cy="698" rx="22" ry="5"/><ellipse cx="825" cy="673" rx="22" ry="5"/>
+    </g>
+    <g id="table-leg-back-left" data-geometry="table-leg-back-left" data-corner="357,500" data-foot="358,645">
+      <path d="m366 508 17 3-18 134h-18Z" fill="#a27f55"/>
+      <path d="m383 511 8 8-18 119-8 7Z" fill="#896b49"/>
+    </g>
+    <g id="table-leg-back-right" data-geometry="table-leg-back-right" data-corner="729,468" data-foot="740,618">
+      <path d="m715 480 18-2 12 139-19 2Z" fill="#a27f55"/>
+      <path d="m733 478 9 4 11 130-8 5Z" fill="#896b49"/>
+    </g>
+    <g id="table-leg-front-left" data-geometry="table-leg-front-left" data-corner="419,555" data-foot="425,698">
+      <path d="m425 566 20-2-13 134-21 1Z" fill="#bd9563"/>
+      <path d="m445 564 8 5-14 123-7 6Z" fill="#9b774e"/>
+    </g>
+    <g id="table-leg-front-right" data-geometry="table-leg-front-right" data-corner="812,513" data-foot="824,674">
+      <path d="m787 527 19-2 24 147-20 3Z" fill="#bd9563"/>
+      <path d="m806 525 8 5 24 136-8 6Z" fill="#9b774e"/>
+    </g>
+    <path id="table-side-apron" data-geometry="table-side-apron" d="m361 514 58 52v44l-58-56Z" fill="#b18a5a"/>
+    <path id="table-front-apron" data-geometry="table-front-apron" d="m419 568 393-42v42l-393 42Z" fill="#b58e5d"/>
+    <path d="m369 530 40 38v23l-40-36Z" fill="#a27c50" stroke-width="1.5"/>
+    <g id="table-drawer" data-geometry="table-drawer">
+      <path d="m475 568 275-29v32l-275 29Z" fill="#866949" stroke-width="1.8"/>
+      <g id="drawer-red-button" data-geometry="drawer-red-button">
+        <circle cx="645" cy="554" r="3.5" fill="#b55a43" stroke="#824735" stroke-width="1"/>
+        <path d="M644 553v2m2-2v2" fill="none" stroke="#e0b18a" stroke-width=".8"/>
+      </g>
+      <path d="m482 576 261-28v19l-261 28Z" fill="#c19a68" stroke-width="1.8"/>
+      <path d="m489 579 247-26" fill="none" stroke="#d3b07c" stroke-width="1.5"/>
+      <g id="drawer-repair-slip" data-geometry="drawer-repair-slip" transform="translate(525 564) rotate(-6)" stroke="#bcaa85" stroke-width=".8">
+        <path d="M0 0h62v13l-5-1-5 1H0Z" fill="#ede0bb"/>
+        <text x="31" y="8.5" text-anchor="middle" font-family="monospace" font-size="6.2" fill="#7b674d" stroke="none">NOT ELECTRICAL</text>
+        <text x="59" y="11.5" text-anchor="end" font-family="Georgia,serif" font-style="italic" font-size="3.8" fill="#7b674d" stroke="none">Jo</text>
+      </g>
+      <circle cx="590" cy="572" r="2.5" fill="#957344" stroke-width="1"/>
+      <circle cx="635" cy="567" r="2.5" fill="#957344" stroke-width="1"/>
+      <path d="M590 572v4q0 3 4 3l37-4q4 0 4-4v-4" fill="none" stroke="#755d40" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="m596 577 32-4" fill="none" stroke="#cfb178" stroke-width="1.5"/>
+    </g>
+    <path id="table-top" data-geometry="table-top" d="M357 500 729 468l83 45-393 42Z" fill="#ddbb83"/>
+    <path id="table-top-edge" data-geometry="table-top-edge" d="m357 500 62 55 393-42v14l-393 42-62-55Z" fill="#bc9360"/>
+    <path d="M419 555v14m-62-69 62 55 393-42" fill="none" stroke="#ecd0a0" stroke-width="1.5"/>
+    <path d="m394 516 38 5 12 15m127-38 29 1m121 15-62 8m-61 6-88 9" fill="none" stroke="#b08a5c" stroke-width="1.5" opacity=".5"/>
   </g>
-  <path d="m394 516 38 5 12 15m127-38 29 1m121 15-62 8m-61 6-88 9" fill="none" stroke="#b08a5c" stroke-width="1.5" opacity=".5"/>
 
   <!-- Basil: a cutting from a friend, and a modest responsibility. -->
-  <g transform="translate(356 382)" stroke="#52724d" stroke-width="2" stroke-linecap="round">
+  <g id="basil" data-geometry="basil" data-contact-y="387" transform="translate(354 330)" stroke="#52724d" stroke-width="2" stroke-linecap="round">
+    <ellipse id="basil-contact-shadow" data-geometry="basil-contact-shadow" cx="0" cy="56" rx="43" ry="2.5" fill="#7a6749" opacity=".23" stroke="none"/>
+    <g id="basil-pot" data-geometry="basil-pot" stroke="#89583f" stroke-width="2.5" stroke-linejoin="round">
+      <ellipse id="basil-saucer" data-geometry="basil-saucer" cx="0" cy="52" rx="40" ry="5" fill="#b37853"/>
+      <path d="M-30 8h60l-6 40q-24 8-48 0Z" fill="#b87150"/>
+      <path d="m-25 15 5 28" fill="none" stroke="#ce946b" stroke-width="3"/>
+      <path d="M-34 4h68v10q-34 8-68 0Z" fill="#cb8a62"/>
+      <ellipse cy="4" rx="34" ry="7" fill="#d69a70"/>
+      <ellipse id="basil-soil" data-geometry="basil-soil" cy="4" rx="28" ry="4" fill="#6e6145" stroke-width="1.3"/>
+      <rect x="-17" y="23" width="35" height="16" rx="2" fill="#e1bd88" stroke="none"/>
+      <text x="0" y="35" text-anchor="middle" fill="#6e583b" stroke="none" font-family="Georgia,serif" font-size="11">basil</text>
+    </g>
     <g class="plant-droopy" fill="#75965e">
-      <path d="M-1 9c-2-29-9-48-25-65m27 53c18-22 32-41 36-63m-34 68c-5-46 0-69 13-88" fill="none" stroke-width="4"/>
-      <path d="M-14-26c-34-39-56-23-44-8 9 13 24 14 44 8Zm-6-21c-29-11-29-32-11-27 13 3 12 16 11 27ZM14-30c28-33 47-24 39-7-7 14-24 13-39 7Zm1-20c-6-28 2-43 15-29 8 10-1 22-15 29ZM5-68c-17-32 2-43 12-29 7 10-4 22-12 29Z"/>
+      <path d="M0 4c-7-17-7-38-23-53M0 4c8-20 24-32 34-55M0 4c-3-29 7-49 11-71" fill="none" stroke-width="3.5"/>
+      <path d="M-16-34c-18-12-40-6-40 12 14 8 31 1 40-12Zm-7-14c-5-20-25-25-30-9 7 12 20 15 30 9ZM20-30c20-17 40-7 35 8-10 10-25 4-35-8Zm11-17c-6-23 5-30 15-17 4 8-4 16-15 17ZM11-62c-12-21-7-36 7-29 14 10 7 23-7 29ZM7-44c-17-16-25-8-24 3 8 11 18 2 24-3Z"/>
+      <path d="m-17-32-24 8m62-5 23 4m-37-22 7-18" fill="none" stroke="#92aa70" stroke-width="1.3"/>
     </g>
     <g class="plant-happy" fill="#6c9557">
-      <path d="M0 9V-75m1 42-27-34m26 24 30-34" fill="none" stroke-width="4"/>
-      <path d="M-1-31c-34-9-45-28-27-32 19-4 24 13 27 32Zm0-25c-24-22-23-40-8-37 15 3 13 20 8 37Zm4 14c33-8 51-31 28-31-18 0-29 19-28 31Zm0-24c22-31 13-46 2-35-9 9-7 23-2 35Zm-30 0c-22-30-40-25-33-11 5 11 22 14 33 11Zm54-9c25-28 42-19 31-6-8 9-19 8-31 6Z"/>
+      <path d="M0 4v-80m0 54-31-32m31 18 33-30" fill="none" stroke-width="3.5"/>
+      <path d="M-1-25c-31-4-43-24-27-30 17-5 25 13 27 30Zm0-24c-24-17-29-39-12-39 15 1 16 22 12 39Zm4 15c31-3 49-23 30-30-18-5-30 18-30 30Zm-2-32c-12-28-1-43 11-32 10 9-1 25-11 32Zm-31 12c-27-7-37-26-22-30 15-3 21 13 22 30Zm62-9c23-29 42-26 35-10-5 12-22 14-35 10Z"/>
+      <path d="m-22-46 15 15m14-10 20-15m-25-17 2-15" fill="none" stroke="#98b177" stroke-width="1.3"/>
     </g>
-    <path d="M-32 2h65l-8 45h-49Z" fill="#b87150" stroke="#89583f" stroke-width="2.5"/>
-    <path d="M-35-4h71v12h-71Z" fill="#cb8a62" stroke="#89583f" stroke-width="2.5"/>
-    <path d="m-29 45 6 4h47l8-4" fill="none" stroke="#966043" stroke-width="5"/>
-    <rect x="-17" y="16" width="35" height="16" rx="2" fill="#e1bd88" stroke="none"/>
-    <text x="0" y="28" text-anchor="middle" fill="#6e583b" stroke="none" font-family="Georgia,serif" font-size="11">basil</text>
+    <path d="M25 10c9-1 12 6 9 15" fill="none" stroke="#987c56" stroke-width="1.2"/>
+    <g id="basil-cutting-tag" data-geometry="basil-cutting-tag" transform="translate(29 15) rotate(6)" stroke="#b39a70" stroke-width="1.2" stroke-linejoin="round">
+      <path d="m0 5 7-5h52v24H7L0 17Z" fill="#ead8ad"/>
+      <circle cx="6" cy="10" r="1.8" fill="#9c8159" stroke="none"/>
+      <text x="33" y="10" text-anchor="middle" font-family="Georgia,serif" font-size="7" fill="#786148" stroke="none">Next cutting:</text>
+      <text x="33" y="20" text-anchor="middle" font-family="Georgia,serif" font-size="8.5" fill="#786148" stroke="none">Inez</text>
+    </g>
   </g>
 
   <!-- Jo's repaired radio, with one remaining screw. -->
-  <g transform="translate(427 386)" stroke="#5b6754" stroke-width="2.5" stroke-linejoin="round">
+  <g id="radio" data-geometry="radio" transform="translate(420 399) rotate(-5)" stroke="#5b6754" stroke-width="2.5" stroke-linejoin="round">
+    <ellipse id="radio-contact-shadow" data-geometry="radio-contact-shadow" cx="74" cy="104" rx="76" ry="6" fill="#76644a" opacity=".21" stroke="none"/>
+    <g id="radio-feet" data-geometry="radio-feet" fill="#76654e" stroke="#73654c" stroke-width="1.5">
+      <path d="M12 93h12v11H12Zm109 0h12v11h-12Z"/>
+    </g>
     <path d="M22 8V-9c0-17 99-17 99 0V8" fill="none" stroke="#8b7658" stroke-width="7"/>
     <rect x="-5" y="4" width="153" height="97" rx="10" fill="#87765b"/>
     <rect width="145" height="96" rx="10" fill="#8d9f83"/>
@@ -251,15 +543,23 @@
     <path d="m114 53-3 9" stroke="#6b6953" stroke-width="2"/>
     <circle class="radio-light" cx="128" cy="10" r="3" fill="#ced0a4" stroke="none"/>
     <text x="51" y="13" font-family="monospace" text-anchor="middle" font-size="8" fill="#f0e7ca" stroke="none">SUNDAY FM</text>
+    <g class="radio-packed" display="none" id="radio-packing-tag" data-geometry="radio-packing-tag" stroke="#917753" stroke-width="1.5">
+      <path d="M119-5c9 4 12 12 18 21" fill="none"/>
+      <path d="m132 12 30 8-7 30-29-8-2-18Z" fill="#e9d6aa"/>
+      <circle cx="133" cy="22" r="2.5" fill="#9c815b" stroke="none"/>
+      <path d="m135 32 4 5 10-9" fill="none" stroke="#788763" stroke-width="2"/>
+      <text x="142" y="43" text-anchor="middle" font-family="Georgia,serif" font-size="6.5" fill="#77664b" stroke="none">FOR JO</text>
+    </g>
   </g>
-  <g transform="translate(514 495) rotate(-5)">
-    <path d="M0 0h68v24H0Z" fill="#ede1b0"/><text x="34" y="15" text-anchor="middle" fill="#79684e" font-family="Georgia,serif" font-size="10">return to Jo!</text>
+  <g id="radio-return-note" data-geometry="radio-return-note" transform="translate(506 507) rotate(-6)">
+    <path d="M0 0h68v19H0Z" fill="#ede1b0"/><text x="34" y="13" text-anchor="middle" fill="#79684e" font-family="Georgia,serif" font-size="10">return to Jo!</text>
   </g>
-  <path d="m594 487 6 2m-3-5-1 8" stroke="#6f6c58" stroke-width="3" stroke-linecap="round"/>
+  <path d="m594 493 6 2m-3-5-1 8" stroke="#6f6c58" stroke-width="3" stroke-linecap="round"/>
 
   <!-- The lamp can make even this afternoon a little softer. -->
-  <g stroke="#726a49" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-    <ellipse cx="688" cy="486" rx="46" ry="10" fill="#a3a270"/>
+  <g id="lamp" data-geometry="lamp" transform="translate(26 -6)" stroke="#726a49" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse id="lamp-contact-shadow" data-geometry="lamp-contact-shadow" cx="688" cy="488" rx="34" ry="8" fill="#796e4b" opacity=".17" stroke="none"/>
+    <ellipse id="lamp-base" data-geometry="lamp-base" cx="688" cy="486" rx="31" ry="8" fill="#a3a270"/>
     <path d="M688 482V335" fill="none" stroke="#8d8660" stroke-width="9"/>
     <path d="M644 269h88l36 75H609Z" fill="#d0bd76"/>
     <path d="m647 270-18 66m33-66-8 66m47-66 12 66m-29-66 1 66m31-66 26 66" fill="none" stroke="#e5d89f" stroke-width="2"/>
@@ -268,27 +568,48 @@
   </g>
 
   <!-- Two mismatched cups are a good kind of planning ahead. -->
-  <g stroke="#917355" stroke-width="2.5" stroke-linejoin="round">
-    <ellipse cx="687" cy="515" rx="89" ry="20" fill="#ad8259"/>
-    <ellipse cx="687" cy="510" rx="87" ry="17" fill="#d4b087"/>
-    <path d="M626 465h42v29c0 24-42 24-42 0Z" fill="#87a18a"/>
-    <path d="M668 470c27-7 27 26 0 22" fill="none" stroke="#72907a" stroke-width="6"/>
-    <ellipse cx="647" cy="465" rx="21" ry="6" fill="#ecd9ac"/>
-    <ellipse cx="647" cy="466" rx="16" ry="3.5" fill="#88663e" stroke="none"/>
-    <path d="m628 480 6 0m-5 7 5 0" stroke="#bbccaa" stroke-width="2"/>
-    <path d="M710 478h38v23c0 22-38 22-38 0Z" fill="#e5c57c"/>
-    <path d="M748 484c23-5 25 22 0 19" fill="none" stroke="#c6a365" stroke-width="5"/>
-    <ellipse cx="729" cy="478" rx="19" ry="5" fill="#f1e3bc"/>
-    <ellipse class="tea-filled tea-color" cx="729" cy="479" rx="15" ry="3" fill="#b57436" stroke="none"/>
-    <path d="M737 490v22l8 4v-9Z" fill="#f7eacb" stroke="#ad9671" stroke-width="1.3"/>
-    <ellipse cx="688" cy="506" rx="10" ry="4" fill="#c9a675"/><path d="m682 506 12-2m-11 4 10-2" stroke="#a98558" stroke-width="1"/>
-  </g>
-  <g class="tea-steam" fill="none" stroke="#faf1d0" stroke-width="3" stroke-linecap="round" opacity=".7">
-    <path d="M639 450c-17-18 14-24 1-42m15 42c-10-15 13-24 2-35M724 462c-14-20 13-27 0-39"/>
+  <g id="tea" data-geometry="tea" transform="translate(674 508) rotate(-6)">
+    <g id="tea-tray" data-geometry="tea-tray" stroke="#917355" stroke-width="2.5" stroke-linejoin="round">
+      <ellipse cy="5" rx="87" ry="12" fill="#76644b" opacity=".18" stroke="none"/>
+      <ellipse cy="3" rx="89" ry="16" fill="#ad8259"/>
+      <ellipse rx="87" ry="14" fill="#d4b087"/>
+      <ellipse cx="-41" cy="2" rx="24" ry="5" fill="#b58f67" stroke="none"/>
+      <ellipse cx="35" cy="7" rx="23" ry="4" fill="#b58f67" stroke="none"/>
+    </g>
+    <g stroke="#917355" stroke-width="2.5" stroke-linejoin="round">
+      <g class="mug-kept" data-geometry="wonky-mug">
+        <path d="M-62-44q21-7 41 0l-1 33c-2 20-39 20-40-1Z" fill="#87a18a"/>
+        <path d="M-22-37c25-8 27 24 0 22" fill="none" stroke="#72907a" stroke-width="6"/>
+        <ellipse cx="-42" cy="-44" rx="20" ry="5" fill="#ecd9ac"/>
+        <ellipse cx="-42" cy="-43" rx="15" ry="3" fill="#88663e" stroke="none"/>
+        <path d="m-59-28 6 1m-5 7 5 0" stroke="#bbccaa" stroke-width="2"/>
+        <circle cx="-49" cy="-18" r="2.5" fill="#476f50" stroke="none"/>
+      </g>
+      <g class="mug-plain" display="none" data-geometry="plain-mug">
+        <path d="M-61-43h39v30c0 20-39 20-39 0Z" fill="#e5d6ae"/>
+        <path d="M-22-36c24-6 25 25 0 21" fill="none" stroke="#b7a27b" stroke-width="5"/>
+        <ellipse cx="-41.5" cy="-43" rx="19.5" ry="5" fill="#efe3c1"/>
+        <ellipse cx="-41.5" cy="-42" rx="15" ry="3" fill="#88663e" stroke="none"/>
+      </g>
+      <g id="tea-cup" data-geometry="tea-cup">
+        <path d="M15-33h39v24c0 21-39 21-39 0Z" fill="#e5c57c"/>
+        <path d="M54-27c23-5 25 22 0 19" fill="none" stroke="#c6a365" stroke-width="5"/>
+        <ellipse cx="34.5" cy="-33" rx="19.5" ry="5" fill="#f1e3bc"/>
+        <ellipse class="tea-filled tea-color" cx="34.5" cy="-32" rx="15" ry="3" fill="#b57436" stroke="none"/>
+        <path d="M43-21V1l8 4v-9Z" fill="#f7eacb" stroke="#ad9671" stroke-width="1.3"/>
+      </g>
+      <ellipse cx="-1" cy="2" rx="9" ry="4" fill="#c9a675"/>
+      <path d="m-7 2 11-1m-10 4 9-2" stroke="#a98558" stroke-width="1"/>
+      <path d="m64 5 14-7" stroke="#9e8d6d" stroke-width="2"/>
+      <ellipse cx="62" cy="6" rx="5" ry="2.5" fill="#c3b897" stroke-width="1"/>
+    </g>
+    <g class="tea-steam" fill="none" stroke="#faf1d0" stroke-width="3" stroke-linecap="round" opacity=".7">
+      <path d="M-49-57c-15-17 13-23 1-40m15 40c-9-15 12-24 2-34M31-47c-14-20 13-27 0-39"/>
+    </g>
   </g>
 
   <!-- The basket and its deliberately visible repair. -->
-  <g transform="translate(245 624)" stroke="#947455" stroke-width="2.5" stroke-linejoin="round">
+  <g id="repair-basket" data-geometry="repair-basket" transform="translate(245 624)" stroke="#947455" stroke-width="2.5" stroke-linejoin="round">
     <ellipse cx="0" cy="70" rx="85" ry="19" fill="#947455" opacity=".14" stroke="none"/>
     <path d="M-72-3h143L53 67H-54Z" fill="#c9a36f"/>
     <path d="m-67 14 134 0m-129 15h122m-118 15H59m-113 14H54m-99-61 9 67m15-67 6 70m16-70v70m22-70-5 70m28-70-10 70" fill="none" stroke="#aa8457" stroke-width="2"/>
@@ -303,13 +624,12 @@
     <path d="m-36-16 0-17m-11 16-11-14" stroke="#bb9f72" stroke-width="3"/>
     <path d="M-18 13c-13 14-28 19-26 41s33 31 26 44" fill="none" stroke="#ae5d47" stroke-width="2"/>
   </g>
-  <g class="crumb-rug" transform="translate(922 665) rotate(-4)"><use href="#crumb-drawing"/></g>
-  <g class="crumb-chair" transform="translate(1007 526) scale(.72)"><use href="#crumb-drawing"/></g>
+  <g id="cat-on-rug" class="crumb-rug" data-geometry="cat-on-rug" data-surface="rug" data-contact-y="726" transform="translate(887 688) scale(.91)"><use href="#crumb-drawing"/></g>
 
   <!-- Evening is a single intentional lighting state, not a looping effect. -->
   <path class="scene-night-wash" d="M0 0h1200v790H0Z" fill="#243b42" opacity=".25" pointer-events="none"/>
   <g class="lamp-glow" pointer-events="none">
-    <ellipse cx="690" cy="413" rx="198" ry="188" fill="url(#lamplight)"/>
-    <ellipse cx="688" cy="345" rx="69" ry="7" fill="#ffebb2" opacity=".9"/>
+    <ellipse cx="716" cy="407" rx="198" ry="188" fill="url(#lamplight)"/>
+    <ellipse cx="714" cy="339" rx="69" ry="7" fill="#ffebb2" opacity=".9"/>
   </g>
 </svg>
